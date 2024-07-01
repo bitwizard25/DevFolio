@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { DEFAULT_CIPHERS } from "tls";
 const defaultTheme = require("tailwindcss/defaultTheme");
  
 const svgToDataUri = require("mini-svg-data-uri");
@@ -62,12 +63,6 @@ module.exports = {
         },
       },
     },
-      colors: {
-        black: {
-            DEFAULT:'#000',
-            100:'#000319'
-          }
-      }
     },
 
     plugins: [
