@@ -51,7 +51,7 @@ const AboutSection = () => {
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl font-extrabold text-gray-900 mb-8">About Me</h2>
         
-        <div className="bg-white shadow-xl rounded-lg overflow-hidden">
+        <div className="bg-white shadow-xl rounded-xl overflow-hidden">
           <div className="flex flex-col md:flex-row">
             <div className="md:w-1/3 bg-gray-800 text-white p-6">
               <div className="relative w-32 h-32 mx-auto mb-3">
