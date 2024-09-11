@@ -1,10 +1,10 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { Terminal, Code, Database, Server } from 'lucide-react';
+import {   Code, Database, Server } from 'lucide-react';
 
 const HeroSection = () => {
   const [terminalText, setTerminalText] = useState('');
-  const fullText = '> Welcome to my portfolio\n> Exploring backend magic...\n> npm install awesome-dev';
+  const fullText = 'Welcome to my portfolion \n> Exploring backend magic...\n> npm install awesome-dev';
   const [showEasterEgg, setShowEasterEgg] = useState(false);
 
   useEffect(() => {
