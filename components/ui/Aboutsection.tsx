@@ -56,7 +56,7 @@ const AboutSection = () => {
             <div className="md:w-1/3 bg-gray-800 text-white p-6">
               <div className="relative w-32 h-32 mx-auto mb-3">
                 <Image 
-                  src="/Raj.jpg"
+                  src="Raj.jpg"
                   alt="Raj Bhoyar" 
                   layout="fill"
                   objectFit="cover"
