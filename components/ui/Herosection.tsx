@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import {   Code, Database, Server } from 'lucide-react';
+import { Code, Database, Server } from 'lucide-react';
 
 const HeroSection = () => {
   const [terminalText, setTerminalText] = useState('');
