@@ -4,6 +4,20 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, Info } from 'lucide-react';
 
+interface Project {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    link: string;
+    github: string;
+    tags: string[];
+}
+
+interface ProjectCardProps {
+    project: Project;
+}
+
 // Sample project data - replace with your actual projects
 const projects = [
   {
@@ -36,7 +50,7 @@ const projects = [
   // Add more projects as needed
 ];
 
-const ProjectCard = ({ project }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
