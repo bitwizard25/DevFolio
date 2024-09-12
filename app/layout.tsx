@@ -1,19 +1,14 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import  {Oswald}  from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/ui/Footer";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+
+const geistMono =Oswald({
+  subsets: ["cyrillic"],
+  weight: ["400", "700"],  // Regular and Bold weights
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,11 +23,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-auto   bg-gradient-to-br from-gray-900 to-gray-800`}
+        className={` ${geistMono} antialiased overflow-y-auto  bg-gradient-to-br from-gray-900 to-gray-800`}
       >
+      <div>
         <Navbar/>
         {children}
         <Footer/>
+        </div>
       </body>
     </html>
   );
