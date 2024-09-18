@@ -55,12 +55,12 @@ const AboutSection = () => {
           <div className="flex flex-col md:flex-row">
             <div className="md:w-1/3 bg-gray-800 text-white p-6">
               <div className="relative w-32 h-32 mx-auto mb-3">
-                <Image 
-                  src="Raj.jpg"
+                 <Image 
+                  src="/Raj.jpg"
                   alt="Raj Bhoyar" 
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-full mb-2"
+                  width={128}
+                  height={128}
+                  className="rounded-full"
                 />
               </div>
               <h3 className="text-2xl font-bold mb-2">Raj Bhoyar</h3>
