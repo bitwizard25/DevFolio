@@ -23,7 +23,7 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white min-h-screen flex flex-col justify-center items-center p-4">
+    <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white min-h-screen flex flex-col justify-center items-center p-4 overflow-y-hidden">
       <div className="max-w-4xl w-full">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">Backend Wizard & Code Conjurer</h1>
         <p className="text-xl md:text-2xl mb-8">Turning coffee into scalable systems since {"[2021]"}</p>
