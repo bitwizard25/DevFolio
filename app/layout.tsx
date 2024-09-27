@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={` ${geistMono} antialiased overflow-y  bg-gradient-to-br from-gray-900 to-gray-800`}
+        className={` ${geistMono} antialiased overflow-y-hidden bg-gradient-to-br from-gray-900 to-gray-800`}
       >
       <div>
         <Navbar/>
