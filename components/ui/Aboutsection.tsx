@@ -90,10 +90,10 @@ const AboutSection = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {skills.map((skillSet, index) => (
                     <div key={index} className="bg-gray-950 p-4 rounded">
-                      <h4 className="font-bold  text-gray-300 mb-2">{skillSet.category}</h4>
+                      <h4 className="font-bold  text-gray-100 mb-2">{skillSet.category}</h4>
                       <div className="flex flex-wrap gap-2">
                         {skillSet.items.map((skill, skillIndex) => (
-                          <span key={skillIndex} className="bg-gray-200 text-gray-700 px-2 py-1 rounded text-sm">{skill}</span>
+                          <span key={skillIndex} className=" text-gray-100 px-2 py-1 rounded text-sm">{skill}</span>
                         ))}
                       </div>
                     </div>
@@ -110,7 +110,7 @@ const AboutSection = () => {
                       <p className="text-gray-500 mb-2">{exp.location}</p>
                       <ul className="list-disc list-inside">
                         {exp.achievements.map((achievement, achIndex) => (
-                          <li key={achIndex} className="text-gray-700">{achievement}</li>
+                          <li key={achIndex} className="text-gray-100">{achievement}</li>
                         ))}
                       </ul>
                     </div>
@@ -122,9 +122,9 @@ const AboutSection = () => {
                 <div>
                   {education.map((edu, index) => (
                     <div key={index} className="mb-4">
-                      <h4 className="font-bold  text-gray-300 text-lg">{edu.degree}</h4>
-                      <p className="text-gray-600">{edu.institution}</p>
-                      <p className="text-gray-500">{edu.period}</p>
+                      <h4 className="font-bold  text-gray-100 text-lg">{edu.degree}</h4>
+                      <p className="text-gray-200">{edu.institution}</p>
+                      <p className="text-gray-200">{edu.period}</p>
                     </div>
                   ))}
                 </div>
