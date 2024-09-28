@@ -49,11 +49,11 @@ const AboutSection = () => {
   return (
     <div className="min-h-screen overflow-y-hidden bg-gradient-to-br from-gray-950 to-gray-600 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-extrabold text-gray-900 mb-8">About Me</h2>
+        <h2 className="text-4xl text-white font-extrabold  mb-8">About Me</h2>
         
         <div className="bg-white shadow-xl rounded-xl overflow-hidden">
           <div className="flex flex-col md:flex-row">
-            <div className="md:w-1/3 bg-gray-800 text-white p-6">
+            <div className="md:w-1/3 bg-gray-600 text-white p-6">
               <div className="relative w-32 h-32 mx-auto mb-3">
                  <Image 
                   src="/Raj.jpg"
@@ -89,8 +89,8 @@ const AboutSection = () => {
               {activeTab === 'skills' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {skills.map((skillSet, index) => (
-                    <div key={index} className="bg-gray-50 p-4 rounded">
-                      <h4 className="font-bold  text-gray-800 mb-2">{skillSet.category}</h4>
+                    <div key={index} className="bg-gray-950 p-4 rounded">
+                      <h4 className="font-bold  text-gray-300 mb-2">{skillSet.category}</h4>
                       <div className="flex flex-wrap gap-2">
                         {skillSet.items.map((skill, skillIndex) => (
                           <span key={skillIndex} className="bg-gray-200 text-gray-700 px-2 py-1 rounded text-sm">{skill}</span>
@@ -105,7 +105,7 @@ const AboutSection = () => {
                 <div>
                   {experience.map((exp, index) => (
                     <div key={index} className="mb-4">
-                      <h4 className="font-bold  text-gray-800 text-lg">{exp.title}</h4>
+                      <h4 className="font-bold  text-gray-300 text-lg">{exp.title}</h4>
                       <p className="text-gray-600">{exp.company} | {exp.period}</p>
                       <p className="text-gray-500 mb-2">{exp.location}</p>
                       <ul className="list-disc list-inside">
@@ -122,7 +122,7 @@ const AboutSection = () => {
                 <div>
                   {education.map((edu, index) => (
                     <div key={index} className="mb-4">
-                      <h4 className="font-bold  text-gray-800 text-lg">{edu.degree}</h4>
+                      <h4 className="font-bold  text-gray-300 text-lg">{edu.degree}</h4>
                       <p className="text-gray-600">{edu.institution}</p>
                       <p className="text-gray-500">{edu.period}</p>
                     </div>
