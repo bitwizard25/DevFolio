@@ -53,7 +53,7 @@ const AboutSection = () => {
         
         <div className="bg-gray-950 shadow-xl rounded-xl overflow-hidden">
           <div className="flex flex-col md:flex-row">
-            <div className="md:w-1/3 bg-gray-600 text-white p-6">
+            <div className="md:w-1/3 bg-gray-900 text-white p-6">
               <div className="relative w-32 h-32 mx-auto mb-3">
                  <Image 
                   src="/Raj.jpg"
