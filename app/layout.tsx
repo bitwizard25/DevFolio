@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={` ${geistMono} antialiased overflow-y-auto bg-gradient-to-br from-gray-900 to-gray-800`}
+        className={` ${geistMono} remove-scrollbar antialiased overflow-y-auto bg-gradient-to-br from-gray-900 to-gray-800`}
       >
       <div>
         <Navbar/>
