@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Oswald } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/ui/navbar";
+import Navbar from "@/components/Navbar";
 import Footer from "@/components/ui/Footer";
 
 const geistMono = Oswald({
