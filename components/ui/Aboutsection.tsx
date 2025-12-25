@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
-import { Code, Briefcase, GraduationCap } from 'lucide-react';
-import Image from 'next/image'
+import { Code, Briefcase, GraduationCap, ChevronRight, Award, Users, ExternalLink } from 'lucide-react';
+import Image from 'next/image';
 
 const AboutSection = () => {
   const [activeTab, setActiveTab] = useState('skills');
@@ -10,130 +10,410 @@ const AboutSection = () => {
     { id: 'skills', label: 'Skills', icon: Code },
     { id: 'experience', label: 'Experience', icon: Briefcase },
     { id: 'education', label: 'Education', icon: GraduationCap },
+    { id: 'certifications', label: 'Achievements', icon: Award },
   ];
 
   const skills = [
-    { category: 'Frontend', items: ['HTML5', 'CSS3', 'JavaScript (ES6+)', 'React.js', 'Redux', 'Webpack', 'Vite.js'] },
-    { category: 'Backend', items: ['Node.js', 'Python', 'Flask', 'Django', 'GraphQL', 'RESTful APIs'] },
-    { category: 'Tools & Others', items: ['Git', 'CI/CD', 'Streamlit', 'Cross-browser compatibility', 'SEO'] },
-    { category: 'Soft Skills', items: ['Communication', 'Leadership', 'Problem-Solving', 'Teamwork', 'Adaptability'] },
+    {
+      category: 'Backend Development',
+      items: [
+        { name: 'Node.js/Express', level: 90 },
+        { name: 'Python (Flask/Django)', level: 88 },
+        { name: 'RESTful API Design', level: 92 },
+        { name: 'GraphQL', level: 75 },
+      ]
+    },
+    {
+      category: 'Database & Message Queues',
+      items: [
+        { name: 'MongoDB/Aggregations', level: 90 },
+        { name: 'Neo4j (Graph DB)', level: 82 },
+        { name: 'RabbitMQ', level: 85 },
+        { name: 'Redis', level: 78 },
+      ]
+    },
+    {
+      category: 'Frontend & DevOps',
+      items: [
+        { name: 'React.js/Next.js', level: 82 },
+        { name: 'TypeScript', level: 80 },
+        { name: 'Git/GitHub', level: 92 },
+        { name: 'Docker/CI-CD', level: 75 },
+      ]
+    },
+    {
+      category: 'AI/ML & Integrations',
+      items: [
+        { name: 'LangChain/OpenAI', level: 85 },
+        { name: 'Streamlit', level: 90 },
+        { name: 'Zoho/MSG91 APIs', level: 88 },
+        { name: 'Google Sheets API', level: 85 },
+      ]
+    },
   ];
 
   const experience = [
+    {
+      title: 'Backend Developer',
+      company: 'NNIIT',
+      companyUrl: 'https://nniit.com',
+      period: 'Dec 2024 - Present',
+      location: 'Remote',
+      type: 'current',
+      description: 'Building production-grade EdTech platform with focus on scalability and automation',
+      achievements: [
+        { text: 'Architected RabbitMQ message queue system processing 10K+ daily events', metric: '10K+ events/day' },
+        { text: 'Built MongoDB aggregation pipelines reducing API response by 60%', metric: '60% faster' },
+        { text: 'Integrated Zoho APIs with atomic locking preventing token race conditions', metric: 'Zero conflicts' },
+        { text: 'Developed automated cron pipelines for session management & transcript analysis', metric: '100% automated' },
+        { text: 'Implemented tutor-student session matching with intelligent attendance tracking', metric: '99% accuracy' },
+        { text: 'Built email notification system via MSG91 with dynamic templates', metric: '5K+ emails/day' },
+      ],
+      techStack: ['Node.js', 'MongoDB', 'RabbitMQ', 'Zoho API', 'MSG91', 'Cron Jobs'],
+    },
     {
       title: 'Web Developer Intern',
       company: 'BlueKei Solutions',
       period: 'Feb 2024 - May 2024',
       location: 'Hybrid, Kharadi Pune',
+      type: 'past',
+      description: 'Developed ORM layer and admin tools for Neo4j graph database',
       achievements: [
-        'Increased query set creation efficiency by 60% by developing an object-relational mapper on top of the Neo4j driver.',
-        'Developed a web application with admin privileges to manage data, enabling CRUD operations for 252 nodes, enhancing data management efficiency by 70%.',
-        'Simplified the query writing process using dropdown designs and relation management by creating an ORM on top of the Neo4j driver, reducing query writing time by 50%.',
+        { text: 'Developed ORM layer on top of Neo4j driver for simplified query building', metric: '60% efficiency gain' },
+        { text: 'Built admin web application with CRUD for 252+ graph nodes', metric: '252 nodes managed' },
+        { text: 'Created dropdown-based query builder reducing query time by 50%', metric: '50% time saved' },
       ],
+      techStack: ['Python', 'Neo4j', 'React', 'Flask'],
+    },
+  ];
+
+  const volunteerExperience = [
+    {
+      role: 'Technical Committee Lead',
+      org: 'T.F.L (Tech Forum for Learning)',
+      period: 'May 2023 - Present',
+      icon: Users,
+    },
+    {
+      role: 'Android Lead',
+      org: 'Coding Club, BDCOE Wardha',
+      period: 'Jan 2021 - Present',
+      icon: Code,
+    },
+    {
+      role: 'Member',
+      org: 'Computer Society of India',
+      period: 'Active Member',
+      icon: Users,
     },
   ];
 
   const education = [
     {
       degree: 'Bachelor of Technology (Computer Engineering)',
-      institution: 'Bapurao Deshmukh College Of Engineering, Sewagram, Wardha',
-      period: '2021-2024',
+      institution: 'Bapurao Deshmukh College of Engineering, Sewagram',
+      period: '2021 - 2024',
+      grade: 'B.Tech CSE',
+      highlights: ['Data Structures', 'System Design', 'AI/ML Fundamentals', 'Database Systems'],
     },
     {
-      degree: 'High School with Computer Science',
+      degree: 'Higher Secondary (Computer Science)',
       institution: 'Arts, Commerce, and Science College Chandrapur',
-      period: '2019-2020',
+      period: '2018 - 2020',
     },
   ];
 
+  const certifications = [
+    { name: 'Code4GovTech Program 2023', issuer: 'C4GT - Government of India', type: 'program', highlight: true },
+    { name: 'Flipkart GRiD 4.0 Challenge', issuer: 'Flipkart & Unstop', type: 'competition', highlight: true },
+    { name: 'GoF Design Patterns with Java', issuer: 'Udemy', type: 'course' },
+    { name: 'Java Network Programming (TCP/IP)', issuer: 'Udemy', type: 'course' },
+    { name: 'O(1) Django Workshop', issuer: 'O(1) Coding Club', type: 'workshop' },
+    { name: 'Walmart SWE Virtual Experience', issuer: 'Forage', type: 'virtual' },
+    { name: 'Web Development Diploma', issuer: 'Udemy', type: 'course' },
+  ];
+
+  const projects = [
+    { name: 'Block Vote', description: 'Blockchain-based e-voting app with tamper-proof vote recording', period: 'Jan - May 2023' },
+  ];
+
   return (
-    <div className="min-h-screen overflow-y-hidden bg-gradient-to-br from-gray-950 to-gray-600 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl text-white font-extrabold  mb-8">About Me</h2>
-        
-        <div className="bg-gray-950 shadow-xl rounded-xl overflow-hidden">
-          <div className="flex flex-col md:flex-row">
-            <div className="md:w-1/3 bg-gray-900 text-white p-6">
-              <div className="relative w-32 h-32 mx-auto mb-3">
-                 <Image 
-                  src="/Raj.jpg"
-                  alt="Raj Bhoyar" 
-                  width={128}
-                  height={128}
-                  className="rounded-full"
-                />
+    <section className="min-h-screen py-20">
+      <div className="section-container">
+        {/* Section Header */}
+        <div className="text-center mb-12 animate-slide-up">
+          <h2 className="section-title">
+            About <span className="gradient-text">Me</span>
+          </h2>
+          <p className="text-slate-400 max-w-2xl mx-auto">
+            Backend specialist with a passion for building efficient, scalable systems that handle real-world complexity
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Profile Card */}
+          <div className="lg:col-span-1 animate-slide-up">
+            <div className="card p-6 text-center sticky top-24">
+              {/* Profile Image */}
+              <div className="relative w-32 h-32 mx-auto mb-4">
+                <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 blur opacity-50" />
+                <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-slate-700">
+                  <Image
+                    src="/Raj.jpg"
+                    alt="Raj Bhoyar"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
               </div>
-              <h3 className="text-2xl font-bold mb-2">Raj Bhoyar</h3>
-              <p className="text-gray-300 mb-4">B.Tech CSE Graduate (2024), aspiring AI/ML Enthusiast and Software Programmer</p>
-              <div className="flex flex-wrap gap-2">
-                <span className="bg-blue-500 text-white px-2 py-1 rounded text-sm">AI/ML</span>
-                <span className="bg-green-500 text-white px-2 py-1 rounded text-sm">Python</span>
-                <span className="bg-yellow-500 text-white px-2 py-1 rounded text-sm">Full Stack</span>
+
+              <h3 className="text-2xl font-bold mb-1">Raj Bhoyar</h3>
+              <p className="text-cyan-400 text-sm mb-3">Backend Developer @ NNIIT</p>
+              <p className="text-slate-400 text-sm mb-4">
+                B.Tech CSE &apos;24 | Building scalable EdTech solutions | Code4GovTech &apos;23
+              </p>
+
+              {/* Tags */}
+              <div className="flex flex-wrap justify-center gap-2 mb-4">
+                <span className="px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                  Backend Expert
+                </span>
+                <span className="px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  10K+ Events/Day
+                </span>
+                <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                  AI/ML
+                </span>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-700">
+                <div className="text-center">
+                  <div className="text-lg font-bold text-cyan-400">3+</div>
+                  <div className="text-xs text-slate-500">Years</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-bold text-purple-400">15+</div>
+                  <div className="text-xs text-slate-500">Projects</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-bold text-emerald-400">7+</div>
+                  <div className="text-xs text-slate-500">Certs</div>
+                </div>
+              </div>
+
+              {/* Volunteer Roles */}
+              <div className="mt-4 pt-4 border-t border-slate-700">
+                <p className="text-xs text-slate-500 mb-2">Leadership Roles</p>
+                <div className="space-y-2">
+                  {volunteerExperience.map((vol, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs text-slate-400">
+                      <vol.icon className="w-3 h-3 text-cyan-400" />
+                      <span>{vol.role}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            
-            <div className="md:w-2/3 p-6">
-              <div className="flex border-b mb-4">
+          </div>
+
+          {/* Content Area */}
+          <div className="lg:col-span-2 animate-slide-up animation-delay-200">
+            <div className="card overflow-hidden">
+              {/* Tabs */}
+              <div className="flex border-b border-slate-700 overflow-x-auto">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
-                    className={`flex items-center px-4 py-2 ${activeTab === tab.id ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
                     onClick={() => setActiveTab(tab.id)}
+                    className={`flex-1 min-w-[100px] flex items-center justify-center gap-2 px-3 py-4 font-medium transition-all duration-300 ${activeTab === tab.id
+                        ? 'text-cyan-400 border-b-2 border-cyan-400 bg-cyan-500/5'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                      }`}
                   >
-                    <tab.icon className="mr-2" size={18} />
-                    {tab.label}
+                    <tab.icon className="w-4 h-4" />
+                    <span className="hidden sm:inline text-sm">{tab.label}</span>
                   </button>
                 ))}
               </div>
-              
-              {activeTab === 'skills' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {skills.map((skillSet, index) => (
-                    <div key={index} className="bg-gray-950 p-4 rounded">
-                      <h4 className="font-bold  text-gray-100 mb-2">{skillSet.category}</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {skillSet.items.map((skill, skillIndex) => (
-                          <span key={skillIndex} className=" text-gray-100 px-2 py-1 rounded text-sm">{skill}</span>
+
+              {/* Tab Content */}
+              <div className="p-6">
+                {/* Skills Tab */}
+                {activeTab === 'skills' && (
+                  <div className="grid sm:grid-cols-2 gap-6 animate-fade-in">
+                    {skills.map((skillSet, index) => (
+                      <div key={index} className="space-y-4">
+                        <h4 className="font-semibold text-slate-200 flex items-center gap-2">
+                          <ChevronRight className="w-4 h-4 text-cyan-400" />
+                          {skillSet.category}
+                        </h4>
+                        <div className="space-y-3">
+                          {skillSet.items.map((skill, skillIndex) => (
+                            <div key={skillIndex}>
+                              <div className="flex justify-between text-sm mb-1">
+                                <span className="text-slate-300">{skill.name}</span>
+                                <span className="text-slate-500">{skill.level}%</span>
+                              </div>
+                              <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full transition-all duration-1000"
+                                  style={{ width: `${skill.level}%` }}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Experience Tab */}
+                {activeTab === 'experience' && (
+                  <div className="space-y-8 animate-fade-in">
+                    {experience.map((exp, index) => (
+                      <div key={index} className="relative pl-6 border-l-2 border-cyan-500/30">
+                        <div className={`absolute -left-2.5 top-0 w-5 h-5 rounded-full border-4 border-slate-800 ${exp.type === 'current' ? 'bg-emerald-500 animate-pulse' : 'bg-cyan-500'
+                          }`} />
+                        <div className="mb-3">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h4 className="text-xl font-semibold text-slate-100">{exp.title}</h4>
+                            {exp.type === 'current' && (
+                              <span className="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                                Current
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <p className="text-cyan-400 font-medium">{exp.company}</p>
+                            {exp.companyUrl && (
+                              <a href={exp.companyUrl} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-cyan-400">
+                                <ExternalLink className="w-3 h-3" />
+                              </a>
+                            )}
+                          </div>
+                          <p className="text-slate-500 text-sm">{exp.period} • {exp.location}</p>
+                          {exp.description && (
+                            <p className="text-slate-400 text-sm mt-1">{exp.description}</p>
+                          )}
+                        </div>
+
+                        {/* Achievements with Metrics */}
+                        <ul className="space-y-2 mb-4">
+                          {exp.achievements.map((achievement, achIndex) => (
+                            <li key={achIndex} className="flex items-start gap-2 text-slate-300 text-sm">
+                              <ChevronRight className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                              <div className="flex-1">
+                                <span>{achievement.text}</span>
+                                {achievement.metric && (
+                                  <span className="ml-2 px-2 py-0.5 rounded text-xs bg-slate-700/50 text-emerald-400">
+                                    {achievement.metric}
+                                  </span>
+                                )}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+
+                        {/* Tech Stack */}
+                        {exp.techStack && (
+                          <div className="flex flex-wrap gap-2">
+                            {exp.techStack.map((tech, i) => (
+                              <span key={i} className="px-2 py-1 rounded text-xs bg-slate-700/50 text-slate-300">
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Education Tab */}
+                {activeTab === 'education' && (
+                  <div className="space-y-6 animate-fade-in">
+                    {education.map((edu, index) => (
+                      <div key={index} className="relative pl-6 border-l-2 border-purple-500/30">
+                        <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-purple-500 border-4 border-slate-800" />
+                        <h4 className="text-xl font-semibold text-slate-100">{edu.degree}</h4>
+                        <p className="text-purple-400">{edu.institution}</p>
+                        <p className="text-slate-500 text-sm mb-2">{edu.period}</p>
+                        {edu.grade && (
+                          <span className="inline-block px-3 py-1 rounded-full text-xs bg-purple-500/20 text-purple-400 mr-2">
+                            {edu.grade}
+                          </span>
+                        )}
+                        {edu.highlights && (
+                          <div className="flex flex-wrap gap-2 mt-3">
+                            {edu.highlights.map((h, i) => (
+                              <span key={i} className="px-2 py-1 rounded text-xs bg-slate-700/50 text-slate-400">
+                                {h}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+
+                    {/* Notable Project */}
+                    <div className="mt-6 p-4 rounded-lg bg-slate-800/30 border border-slate-700">
+                      <h4 className="font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                        <Award className="w-4 h-4 text-cyan-400" />
+                        Notable Academic Project
+                      </h4>
+                      {projects.map((proj, i) => (
+                        <div key={i}>
+                          <p className="text-cyan-400 font-medium">{proj.name}</p>
+                          <p className="text-slate-400 text-sm">{proj.description}</p>
+                          <p className="text-slate-500 text-xs mt-1">{proj.period}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Certifications Tab */}
+                {activeTab === 'certifications' && (
+                  <div className="animate-fade-in">
+                    {/* Highlighted Achievements */}
+                    <div className="mb-6">
+                      <h4 className="font-semibold text-slate-200 mb-3 flex items-center gap-2">
+                        <Award className="w-4 h-4 text-yellow-400" />
+                        Key Achievements
+                      </h4>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {certifications.filter(c => c.highlight).map((cert, i) => (
+                          <div key={i} className="p-4 rounded-lg bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/30">
+                            <p className="font-medium text-slate-100">{cert.name}</p>
+                            <p className="text-slate-400 text-sm">{cert.issuer}</p>
+                          </div>
                         ))}
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
-              
-              {activeTab === 'experience' && (
-                <div>
-                  {experience.map((exp, index) => (
-                    <div key={index} className="mb-4">
-                      <h4 className="font-bold  text-gray-300 text-lg">{exp.title}</h4>
-                      <p className="text-gray-600">{exp.company} | {exp.period}</p>
-                      <p className="text-gray-500 mb-2">{exp.location}</p>
-                      <ul className="list-disc list-inside">
-                        {exp.achievements.map((achievement, achIndex) => (
-                          <li key={achIndex} className="text-gray-100">{achievement}</li>
-                        ))}
-                      </ul>
+
+                    {/* Other Certifications */}
+                    <h4 className="font-semibold text-slate-200 mb-3">Certifications & Courses</h4>
+                    <div className="grid sm:grid-cols-2 gap-2">
+                      {certifications.filter(c => !c.highlight).map((cert, i) => (
+                        <div key={i} className="flex items-center gap-2 p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
+                          <Award className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                          <div className="min-w-0">
+                            <p className="text-slate-200 text-sm truncate">{cert.name}</p>
+                            <p className="text-slate-500 text-xs">{cert.issuer}</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              )}
-              
-              {activeTab === 'education' && (
-                <div>
-                  {education.map((edu, index) => (
-                    <div key={index} className="mb-4">
-                      <h4 className="font-bold  text-gray-100 text-lg">{edu.degree}</h4>
-                      <p className="text-gray-200">{edu.institution}</p>
-                      <p className="text-gray-200">{edu.period}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
