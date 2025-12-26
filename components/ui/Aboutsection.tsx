@@ -33,57 +33,95 @@ const AboutSection = () => {
       ]
     },
     {
-      category: 'Frontend & DevOps',
+      category: 'AI/ML & LLMs',
       items: [
-        { name: 'React.js/Next.js', level: 82 },
-        { name: 'TypeScript', level: 80 },
-        { name: 'Git/GitHub', level: 92 },
-        { name: 'Docker/CI-CD', level: 75 },
+        { name: 'LangChain/LangGraph', level: 88 },
+        { name: 'OpenAI/Gemini/Groq', level: 85 },
+        { name: 'RAG & Chroma', level: 82 },
+        { name: 'CrewAI', level: 78 },
+        { name: 'MCP', level: 75 },
       ]
     },
     {
-      category: 'AI/ML & Integrations',
+      category: 'Others & Integrations',
       items: [
-        { name: 'LangChain/OpenAI', level: 85 },
-        { name: 'Streamlit', level: 90 },
         { name: 'Zoho/MSG91 APIs', level: 88 },
         { name: 'Google Sheets API', level: 85 },
+        { name: 'Git/Docker/CI-CD', level: 85 },
+        { name: 'Payment Gateways', level: 80 },
       ]
     },
   ];
 
   const experience = [
     {
-      title: 'Backend Developer',
+      title: 'Software Development Engineer (AI)',
       company: 'NNIIT',
       companyUrl: 'https://nniit.com',
-      period: 'Dec 2024 - Present',
-      location: 'Remote',
+      period: 'Nov 2025 - Present',
+      location: 'Hyderabad',
       type: 'current',
-      description: 'Building production-grade EdTech platform with focus on scalability and automation',
+      description: 'Leading AI initiatives including RAG pipelines and intelligent automation',
+      achievements: [
+        { text: 'Building RAG pipelines for transcript analysis with LangChain', metric: 'AI-Powered' },
+        { text: 'Developing intelligent automation systems for EdTech workflows', metric: 'Automation' },
+      ],
+      techStack: ['LangChain', 'OpenAI', 'Python', 'Neo4j', 'Node.js'],
+    },
+    {
+      title: 'Full Stack Engineer',
+      company: 'NNIIT',
+      companyUrl: 'https://nniit.com',
+      period: 'Jun 2025 - Nov 2025',
+      location: 'Hyderabad',
+      type: 'past',
+      description: 'Built scalable EdTech backend with focus on performance and automation',
       achievements: [
         { text: 'Architected RabbitMQ message queue system processing 10K+ daily events', metric: '10K+ events/day' },
         { text: 'Built MongoDB aggregation pipelines reducing API response by 60%', metric: '60% faster' },
         { text: 'Integrated Zoho APIs with atomic locking preventing token race conditions', metric: 'Zero conflicts' },
         { text: 'Developed automated cron pipelines for session management & transcript analysis', metric: '100% automated' },
-        { text: 'Implemented tutor-student session matching with intelligent attendance tracking', metric: '99% accuracy' },
-        { text: 'Built email notification system via MSG91 with dynamic templates', metric: '5K+ emails/day' },
       ],
-      techStack: ['Node.js', 'MongoDB', 'RabbitMQ', 'Zoho API', 'MSG91', 'Cron Jobs'],
+      techStack: ['Node.js', 'MongoDB', 'RabbitMQ', 'Zoho API', 'MSG91'],
     },
     {
-      title: 'Web Developer Intern',
+      title: 'Founding Engineer',
+      company: 'Games World League',
+      period: 'May 2024 - May 2025',
+      location: 'Remote',
+      type: 'past',
+      description: 'Core engineering team building gaming platform from ground up',
+      achievements: [
+        { text: 'Architected backend systems for gaming platform', metric: 'Full Stack' },
+        { text: 'Implemented key features as part of founding team', metric: 'Startup' },
+      ],
+      techStack: ['Node.js', 'MongoDB', 'React', 'AWS'],
+    },
+    {
+      title: 'Software Developer Intern',
       company: 'BlueKei Solutions',
-      period: 'Feb 2024 - May 2024',
-      location: 'Hybrid, Kharadi Pune',
+      period: 'Feb 2024 - Apr 2024',
+      location: 'Pune (Hybrid)',
       type: 'past',
       description: 'Developed ORM layer and admin tools for Neo4j graph database',
       achievements: [
-        { text: 'Developed ORM layer on top of Neo4j driver for simplified query building', metric: '60% efficiency gain' },
-        { text: 'Built admin web application with CRUD for 252+ graph nodes', metric: '252 nodes managed' },
-        { text: 'Created dropdown-based query builder reducing query time by 50%', metric: '50% time saved' },
+        { text: 'Developed ORM layer on top of Neo4j driver for simplified query building', metric: '60% efficiency' },
+        { text: 'Built admin web application with CRUD for 252+ graph nodes', metric: '252 nodes' },
       ],
-      techStack: ['Python', 'Neo4j', 'React', 'Flask'],
+      techStack: ['Python', 'Neo4j', 'Flask', 'Jinja'],
+    },
+    {
+      title: 'Technical Lead',
+      company: 'TFL',
+      period: 'Jun 2023 - Jun 2024',
+      location: 'Sewagram',
+      type: 'past',
+      description: 'Led technical initiatives and managed team operations',
+      achievements: [
+        { text: 'Led technical committee and managed event organization', metric: 'Leadership' },
+        { text: 'Previously served as Admin member for 9 months', metric: 'Team Mgmt' },
+      ],
+      techStack: ['Leadership', 'Event Management', 'Team Building'],
     },
   ];
 
@@ -168,7 +206,7 @@ const AboutSection = () => {
               </div>
 
               <h3 className="text-2xl font-bold mb-1">Raj Bhoyar</h3>
-              <p className="text-cyan-400 text-sm mb-3">Backend Developer @ NNIIT</p>
+              <p className="text-cyan-400 text-sm mb-3">Software Developer @ NNIIT</p>
               <p className="text-slate-400 text-sm mb-4">
                 B.Tech CSE &apos;24 | Building scalable EdTech solutions | Code4GovTech &apos;23
               </p>
@@ -227,8 +265,8 @@ const AboutSection = () => {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex-1 min-w-[100px] flex items-center justify-center gap-2 px-3 py-4 font-medium transition-all duration-300 ${activeTab === tab.id
-                        ? 'text-cyan-400 border-b-2 border-cyan-400 bg-cyan-500/5'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                      ? 'text-cyan-400 border-b-2 border-cyan-400 bg-cyan-500/5'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
                       }`}
                   >
                     <tab.icon className="w-4 h-4" />

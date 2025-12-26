@@ -12,43 +12,63 @@ if (typeof window !== 'undefined') {
 const experiences = [
     {
         type: 'work',
-        title: 'Backend Developer',
+        title: 'Software Development Engineer (AI)',
         organization: 'NNIIT',
-        period: 'May 2024 - Present',
-        description: 'Building scalable EdTech backend with Node.js, MongoDB, and RabbitMQ. Processing 10K+ daily events through message queues.',
-        highlights: ['RabbitMQ Integration', 'Cron Automation', 'API Optimization'],
+        period: 'Nov 2025 - Present',
+        description: 'Leading AI initiatives including RAG pipelines, transcript analysis with LangChain, and intelligent automation systems.',
+        highlights: ['LangChain', 'RAG Systems', 'AI Integration'],
         icon: Briefcase,
         color: '#0A84FF',
     },
     {
         type: 'work',
-        title: 'Backend Developer Intern',
+        title: 'Full Stack Engineer',
         organization: 'NNIIT',
-        period: 'Jan 2024 - Apr 2024',
-        description: 'Developed core backend features, implemented database schemas, and built RESTful APIs for the EdTech platform.',
-        highlights: ['MongoDB Schema Design', 'REST APIs', 'Code4GovTech Selection'],
+        period: 'Jun 2025 - Nov 2025',
+        description: 'Built scalable EdTech backend processing 10K+ daily events. Developed session management, RabbitMQ queues, and automated cron jobs.',
+        highlights: ['Node.js', 'MongoDB', 'RabbitMQ'],
+        icon: Briefcase,
+        color: '#5856D6',
+    },
+    {
+        type: 'work',
+        title: 'Founding Engineer',
+        organization: 'Games World League',
+        period: 'May 2024 - May 2025',
+        description: 'Core engineering team building the gaming platform from ground up. Architected backend systems and implemented key features.',
+        highlights: ['Full Stack', 'Architecture', 'Startup'],
         icon: Briefcase,
         color: '#BF5AF2',
+    },
+    {
+        type: 'work',
+        title: 'Software Developer Intern',
+        organization: 'BlueKei Solutions',
+        period: 'Feb 2024 - Apr 2024',
+        description: 'Built internal management tool using Neo4j and Flask. Established CRUD operations and streamlined internal processes.',
+        highlights: ['Neo4j', 'Flask', 'Python'],
+        icon: Briefcase,
+        color: '#32D74B',
+    },
+    {
+        type: 'work',
+        title: 'Technical Lead',
+        organization: 'TFL',
+        period: 'Jun 2023 - Jun 2024',
+        description: 'Led technical initiatives and managed team operations. Previously served as Admin member handling event management.',
+        highlights: ['Leadership', 'Team Management', 'Events'],
+        icon: Briefcase,
+        color: '#FF9F0A',
     },
     {
         type: 'education',
         title: 'B.Tech in Computer Science',
         organization: 'BDCOE Wardha',
         period: '2020 - 2024',
-        description: 'Graduated with strong foundation in Data Structures, Algorithms, and Software Engineering principles.',
-        highlights: ['DSA', 'Software Engineering', 'Database Systems'],
+        description: 'Graduated with strong foundation in Data Structures, Algorithms, and Software Engineering.',
+        highlights: ['DSA', 'Software Engineering', 'Databases'],
         icon: GraduationCap,
-        color: '#32D74B',
-    },
-    {
-        type: 'achievement',
-        title: 'Code4GovTech Contributor',
-        organization: 'Government of India Initiative',
-        period: '2023',
-        description: 'Selected among top contributors for open-source contributions to government technology projects.',
-        highlights: ['Open Source', 'Government Tech', 'Top Contributor'],
-        icon: Award,
-        color: '#FF9F0A',
+        color: '#FF375F',
     },
 ];
 
@@ -127,7 +147,7 @@ const ExperienceTimeline = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="py-24 lg:py-32 relative">
+        <section ref={sectionRef} data-scroll-section className="py-24 lg:py-32 relative">
             {/* Background */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent" />
 

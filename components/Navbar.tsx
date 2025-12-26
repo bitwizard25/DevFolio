@@ -2,113 +2,105 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Code2 } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const pathname = usePathname();
 
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
-    { href: '/projects', label: 'Projects' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/projects', label: 'Work' },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      // Navbar appears after scrolling 80px
+      setIsVisible(window.scrollY > 80);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // Check initial scroll position
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   const isActive = (path: string) => pathname === path;
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-          ? 'py-3 glass shadow-lg'
-          : 'py-5 bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${isVisible
+          ? 'translate-y-0 opacity-100'
+          : '-translate-y-full opacity-0 pointer-events-none'
         }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="group flex items-center gap-2 text-xl font-bold"
-          >
-            <div className="relative p-2 rounded-lg bg-gradient-to-br from-cyan-500 to-purple-500 group-hover:shadow-glow transition-all duration-300">
-              <Code2 className="w-5 h-5 text-white" />
-            </div>
-            <span className="gradient-text">DevFolio</span>
+      {/* Glassmorphic bar */}
+      <div className="mx-4 mt-4 rounded-2xl glass-elevated">
+        <div className="px-6 py-3 flex items-center justify-between">
+          {/* Logo - Simple, confident */}
+          <Link href="/" className="text-lg font-semibold text-white hover:text-white/80 transition-colors">
+            RB
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Minimal */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-300 ${isActive(link.href)
-                    ? 'text-cyan-400'
-                    : 'text-slate-300 hover:text-white'
+                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg
+                  ${isActive(link.href)
+                    ? 'text-white'
+                    : 'text-white/60 hover:text-white'
                   }`}
               >
                 {link.label}
-                {/* Active Indicator */}
+                {/* Subtle active dot */}
                 {isActive(link.href) && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-cyan-400 rounded-full" />
+                  <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#0A84FF] rounded-full" />
                 )}
-                {/* Hover Effect */}
-                <span className="absolute inset-0 rounded-lg bg-slate-700/0 hover:bg-slate-700/50 transition-colors duration-300 -z-10" />
               </Link>
             ))}
-
-            {/* CTA Button */}
-            <Link
-              href="/contact"
-              className="ml-4 btn-primary text-sm"
-            >
-              Let&apos;s Talk
-            </Link>
           </div>
+
+          {/* CTA - One clear action */}
+          <Link
+            href="/contact"
+            className="hidden md:block px-5 py-2 text-sm font-medium text-white 
+                       bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300"
+          >
+            Contact
+          </Link>
 
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-lg glass hover:bg-slate-700/50 transition-colors duration-300"
+            className="md:hidden p-2 text-white/70 hover:text-white transition-colors"
             aria-label="Toggle menu"
           >
-            {isOpen ? (
-              <X className="w-5 h-5 text-slate-100" />
-            ) : (
-              <Menu className="w-5 h-5 text-slate-100" />
-            )}
+            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
         {/* Mobile Navigation */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${isOpen ? 'max-h-80 opacity-100 mt-4' : 'max-h-0 opacity-0'
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${isOpen ? 'max-h-64 pb-4' : 'max-h-0'
             }`}
         >
-          <div className="glass rounded-xl p-4 space-y-2">
+          <div className="px-4 space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className={`block px-4 py-3 rounded-lg font-medium transition-all duration-300 ${isActive(link.href)
-                    ? 'bg-cyan-500/20 text-cyan-400'
-                    : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${isActive(link.href)
+                    ? 'bg-white/10 text-white'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
                   }`}
               >
                 {link.label}
@@ -117,9 +109,10 @@ const Navbar = () => {
             <Link
               href="/contact"
               onClick={() => setIsOpen(false)}
-              className="block btn-primary text-center mt-4"
+              className="block px-4 py-3 mt-2 text-center text-sm font-medium text-white 
+                         bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300"
             >
-              Let&apos;s Talk
+              Contact
             </Link>
           </div>
         </div>

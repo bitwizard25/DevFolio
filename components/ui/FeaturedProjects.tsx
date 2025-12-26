@@ -12,27 +12,24 @@ if (typeof window !== 'undefined') {
 const projects = [
     {
         title: 'EdTech Backend Platform',
-        description: 'Scalable backend system processing 10K+ daily events with RabbitMQ queues, automated cron jobs, and real-time session management.',
-        tags: ['Node.js', 'MongoDB', 'RabbitMQ', 'Cron Jobs'],
+        description: 'Production system at NNIIT handling 10K+ daily events. Built session management, automated cron jobs for session lifecycle, and RabbitMQ message queues for async processing.',
+        tags: ['Node.js', 'MongoDB', 'RabbitMQ'],
         icon: Database,
-        color: '#0A84FF',
-        metrics: ['10K+ Events/Day', '60% Faster APIs', '99.9% Uptime'],
+        gradient: 'from-blue-500/20 to-cyan-500/20',
     },
     {
-        title: 'AI-Powered Session Analytics',
-        description: 'RAG-based transcript analysis system using LangChain and Neo4j for intelligent tutoring insights and automated reporting.',
+        title: 'AI Session Analytics',
+        description: 'RAG pipeline analyzing tutoring session transcripts using LangChain. Extracts insights, generates metrics, and stores knowledge in Neo4j graph database for semantic search.',
         tags: ['Python', 'LangChain', 'Neo4j', 'OpenAI'],
         icon: Bot,
-        color: '#BF5AF2',
-        metrics: ['AI-Powered', 'Real-time Analysis', 'Auto Reports'],
+        gradient: 'from-purple-500/20 to-pink-500/20',
     },
     {
-        title: 'Automated Scheduling System',
-        description: 'Smart scheduling engine with Zoho Calendar integration, conflict detection, and automated session lifecycle management.',
-        tags: ['Express', 'Zoho API', 'MongoDB', 'Automation'],
+        title: 'Smart Scheduling Engine',
+        description: 'Automated scheduling system integrating Zoho Calendar API. Handles conflict detection, tutor-student matching, and session lifecycle from creation to completion.',
+        tags: ['Express', 'Zoho API', 'MongoDB'],
         icon: Zap,
-        color: '#32D74B',
-        metrics: ['Zero Conflicts', 'Auto-Sync', '24/7 Running'],
+        gradient: 'from-green-500/20 to-emerald-500/20',
     },
 ];
 
@@ -40,133 +37,92 @@ const FeaturedProjects = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<HTMLDivElement>(null);
-    const animationRan = useRef(false);
 
     useEffect(() => {
-        if (animationRan.current) return;
-
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (prefersReducedMotion) return;
 
-        // Small delay to ensure DOM is ready
-        const timer = setTimeout(() => {
-            const ctx = gsap.context(() => {
-                // Header animation
-                gsap.fromTo(headerRef.current,
-                    { opacity: 0, y: 40 },
+        const ctx = gsap.context(() => {
+            gsap.fromTo(headerRef.current,
+                { opacity: 0, y: 30 },
+                {
+                    opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+                    scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
+                }
+            );
+
+            const cards = cardsRef.current?.querySelectorAll('.project-card');
+            if (cards) {
+                gsap.fromTo(cards,
+                    { opacity: 0, y: 50 },
                     {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.8,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: headerRef.current,
-                            start: 'top 85%',
-                        },
+                        opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out',
+                        scrollTrigger: { trigger: cardsRef.current, start: 'top 80%' },
                     }
                 );
+            }
+        }, sectionRef);
 
-                // Cards stagger animation
-                const cards = cardsRef.current?.querySelectorAll('.project-card');
-                if (cards && cards.length > 0) {
-                    gsap.fromTo(cards,
-                        { opacity: 0, y: 60 },
-                        {
-                            opacity: 1,
-                            y: 0,
-                            duration: 0.8,
-                            stagger: 0.15,
-                            ease: 'power3.out',
-                            scrollTrigger: {
-                                trigger: cardsRef.current,
-                                start: 'top 85%',
-                            },
-                        }
-                    );
-                }
-            }, sectionRef);
-
-            animationRan.current = true;
-
-            return () => ctx.revert();
-        }, 100);
-
-        return () => clearTimeout(timer);
+        return () => ctx.revert();
     }, []);
 
     return (
-        <section id="projects" ref={sectionRef} className="py-24 lg:py-32 relative">
+        <section id="projects" ref={sectionRef} data-scroll-section className="py-32 lg:py-40 relative">
             <div className="section-container">
                 {/* Header */}
-                <div ref={headerRef} className="text-center mb-16" style={{ opacity: 0 }}>
-                    <p className="text-overline text-[#0A84FF] mb-3">Featured Work</p>
-                    <h2 className="section-title">
-                        Projects & <span className="gradient-text">Achievements</span>
+                <div ref={headerRef} className="text-center mb-20" style={{ opacity: 0 }}>
+                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                        Selected work
                     </h2>
-                    <p className="text-white/50 max-w-2xl mx-auto text-body-large">
-                        A showcase of backend systems, automation tools, and AI-powered solutions I&apos;ve built
+                    <p className="text-lg text-white/40 max-w-md mx-auto">
+                        Systems I&apos;ve built that solve real problems
                     </p>
                 </div>
 
                 {/* Projects Grid */}
-                <div ref={cardsRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div ref={cardsRef} className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                     {projects.map((project, index) => {
                         const Icon = project.icon;
                         return (
                             <div
                                 key={index}
-                                className="project-card card p-6 lg:p-8 group cursor-pointer"
+                                className="project-card group relative p-8 rounded-2xl 
+                                         bg-white/[0.02] border border-white/10
+                                         hover:bg-white/[0.04] hover:border-white/20
+                                         transition-all duration-500 cursor-pointer"
                                 style={{ opacity: 0 }}
                             >
-                                {/* Icon */}
-                                <div
-                                    className="inline-flex p-3 rounded-xl mb-6"
-                                    style={{
-                                        backgroundColor: `${project.color}15`,
-                                    }}
-                                >
-                                    <Icon
-                                        className="w-6 h-6"
-                                        style={{ color: project.color }}
-                                    />
-                                </div>
+                                {/* Subtle gradient on hover */}
+                                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${project.gradient} 
+                                              opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
 
-                                {/* Title */}
-                                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#0A84FF] transition-colors">
-                                    {project.title}
-                                </h3>
+                                <div className="relative">
+                                    {/* Icon */}
+                                    <div className="inline-flex p-3 rounded-xl bg-white/5 mb-6">
+                                        <Icon className="w-6 h-6 text-white/60" />
+                                    </div>
 
-                                {/* Description */}
-                                <p className="text-white/50 text-sm mb-5 leading-relaxed">
-                                    {project.description}
-                                </p>
+                                    {/* Title */}
+                                    <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-white transition-colors">
+                                        {project.title}
+                                    </h3>
 
-                                {/* Metrics */}
-                                <div className="flex flex-wrap gap-2 mb-5">
-                                    {project.metrics.map((metric, metricIndex) => (
-                                        <span
-                                            key={metricIndex}
-                                            className="px-2.5 py-1 rounded-md text-xs font-medium"
-                                            style={{
-                                                backgroundColor: `${project.color}15`,
-                                                color: project.color,
-                                            }}
-                                        >
-                                            {metric}
-                                        </span>
-                                    ))}
-                                </div>
+                                    {/* Description */}
+                                    <p className="text-sm text-white/40 leading-relaxed mb-6">
+                                        {project.description}
+                                    </p>
 
-                                {/* Tags */}
-                                <div className="flex flex-wrap gap-2 pt-5 border-t border-white/5">
-                                    {project.tags.map((tag, tagIndex) => (
-                                        <span
-                                            key={tagIndex}
-                                            className="px-2.5 py-1 rounded-md text-xs bg-white/5 text-white/50"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
+                                    {/* Tags */}
+                                    <div className="flex flex-wrap gap-2">
+                                        {project.tags.map((tag, tagIndex) => (
+                                            <span
+                                                key={tagIndex}
+                                                className="px-3 py-1 text-xs text-white/50 bg-white/5 rounded-lg"
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         );
@@ -174,12 +130,13 @@ const FeaturedProjects = () => {
                 </div>
 
                 {/* CTA */}
-                <div className="text-center mt-12">
+                <div className="text-center mt-16">
                     <Link
                         href="/projects"
-                        className="btn-primary inline-flex items-center gap-2 group"
+                        className="group inline-flex items-center gap-2 text-white/50 hover:text-white 
+                                 transition-colors duration-300"
                     >
-                        View All Projects
+                        <span className="font-medium">View all projects</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Link>
                 </div>
