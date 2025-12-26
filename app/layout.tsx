@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/ui/Footer";
-import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import ClientLayout from "@/components/ClientLayout";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,7 +33,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased bg-black text-white overflow-x-hidden`}
       >
-        <SmoothScrollProvider>
+        <ClientLayout>
           <div className="relative min-h-screen flex flex-col">
             <Navbar />
             <main className="flex-grow">
@@ -41,7 +41,7 @@ export default function RootLayout({
             </main>
             <Footer />
           </div>
-        </SmoothScrollProvider>
+        </ClientLayout>
       </body>
     </html>
   );

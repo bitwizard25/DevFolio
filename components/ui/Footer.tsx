@@ -31,7 +31,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative py-12 border-t border-white/5">
+    <footer data-scroll-section className="relative py-12 border-t border-white/5">
       <div className="section-container">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
 

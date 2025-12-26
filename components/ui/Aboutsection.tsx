@@ -176,7 +176,7 @@ const AboutSection = () => {
   ];
 
   return (
-    <section className="min-h-screen py-20">
+    <section data-scroll-section className="min-h-screen py-20">
       <div className="section-container">
         {/* Section Header */}
         <div className="text-center mb-12 animate-slide-up">
