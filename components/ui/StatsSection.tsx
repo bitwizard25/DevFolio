@@ -67,7 +67,7 @@ const StatsSection = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="py-20 lg:py-24 relative overflow-hidden">
+        <section ref={sectionRef} data-scroll-section className="py-20 lg:py-24 relative overflow-hidden">
             {/* Background accent */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A84FF]/5 to-transparent" />
 
