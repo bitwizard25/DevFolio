@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import { Mail, Linkedin, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -33,29 +34,34 @@ const ContactCTA = () => {
                     <div className="flex flex-col sm:flex-row justify-center gap-4">
                         <a
                             href="mailto:rajbhoyar729@gmail.com"
-                            className="group inline-flex items-center justify-center gap-3 px-8 py-4 
+                            className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 
                                      text-lg font-medium text-white 
                                      bg-gradient-to-r from-[#0A84FF] to-[#5856D6] rounded-2xl
-                                     hover:shadow-[0_0_40px_rgba(10,132,255,0.3)] 
-                                     transition-all duration-500"
+                                     overflow-hidden
+                                     transition-all duration-300
+                                     hover:scale-105 hover:shadow-[0_0_40px_rgba(10,132,255,0.4)]"
                         >
-                            <Mail className="w-5 h-5" />
-                            Get in Touch
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            <Mail className="relative z-10 w-5 h-5" />
+                            <span className="relative z-10">Get in Touch</span>
+                            <ArrowRight className="relative z-10 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </a>
 
                         <a
                             href="https://linkedin.com/in/raj-bhoyar-b597b416a/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-2 px-8 py-4
+                            className="group relative inline-flex items-center justify-center gap-2 px-8 py-4
                                      text-lg font-medium text-white/70 
                                      bg-white/5 border border-white/10 rounded-2xl
+                                     overflow-hidden
+                                     transition-all duration-300
                                      hover:bg-white/10 hover:text-white hover:border-white/20
-                                     transition-all duration-300"
+                                     hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)]"
                         >
-                            <Linkedin className="w-5 h-5" />
-                            LinkedIn
+                            <Linkedin className="relative z-10 w-5 h-5" />
+                            <span className="relative z-10">LinkedIn</span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </a>
                     </div>
                 </motion.div>

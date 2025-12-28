@@ -126,9 +126,10 @@ const ExperienceTimeline = () => {
                                         <motion.div
                                             initial={{ opacity: 0, x: -40 }}
                                             whileInView={{ opacity: 1, x: 0 }}
-                                            transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
+                                            whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.03)' }}
+                                            transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
                                             viewport={{ once: true }}
-                                            className="card p-6"
+                                            className="card p-6 transition-colors"
                                         >
                                             <div className="flex items-start gap-4">
                                                 {/* Icon */}
@@ -178,10 +179,11 @@ const ExperienceTimeline = () => {
                 <div className="text-center mt-12">
                     <Link
                         href="/about"
-                        className="btn-secondary inline-flex items-center gap-2 group"
+                        className="group relative inline-flex items-center gap-3 px-8 py-4 text-lg font-medium text-white bg-white/10 rounded-full overflow-hidden transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] backdrop-blur-md border border-white/10"
                     >
-                        View Full Experience
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        <span className="relative z-10">View Full Experience</span>
+                        <ArrowRight className="relative z-10 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </Link>
                 </div>
             </div>

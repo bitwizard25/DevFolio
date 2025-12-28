@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { Code, Briefcase, GraduationCap, ChevronRight, Award, Users, ExternalLink } from 'lucide-react';
+import { Code2 as Code, Briefcase, GraduationCap, ChevronRight, Award, Users, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 
 const AboutSection = () => {
