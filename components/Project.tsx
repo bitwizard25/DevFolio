@@ -94,12 +94,12 @@ const projects: Project[] = [
   {
     id: 101,
     title: "Lok Darpan",
-    description: "A digital platform reflecting social dynamics and civic engagement. MERN Stack application.",
-    longDescription: "Built a comprehensive full-stack application (MERN) to facilitate transparency and digital civic engagement.",
+    description: "A digital platform reflecting social dynamics and civic engagement. Built with Next.js.",
+    longDescription: "Built a comprehensive full-stack application (Next.js) to facilitate transparency and digital civic engagement.",
     image: "/project_lok_darpan_1766892221259.png",
     link: "https://github.com/rajbhoyar729/LokDarpan",
     github: "https://github.com/rajbhoyar729/LokDarpan",
-    tags: ["MERN Stack", "React", "Node.js", "Social"],
+    tags: ["Next.js", "Node.js", "MongoDB", "Social"],
     featured: true,
     icon: Users,
     category: 'personal'
@@ -107,12 +107,12 @@ const projects: Project[] = [
   {
     id: 102,
     title: "Wizard Vibe",
-    description: "AI-powered productivity assistant with real-time collaboration and smart task automation.",
-    longDescription: "Developed an intelligent assistant using OpenAI, LangChain, and Socket.IO for real-time features and meeting summaries.",
+    description: "Agentic AI productivity assistant with real-time collaboration and CrewAI workflows.",
+    longDescription: "Developed an intelligent assistant using Gemini, CrewAI, and Socket.IO for real-time features and agentic automation.",
     image: "/project_wizard_vibe_1766892242642.png",
     link: "https://github.com/rajbhoyar729/Wizard-Vibe",
     github: "https://github.com/rajbhoyar729/Wizard-Vibe",
-    tags: ["AI", "LangChain", "Socket.IO", "MERN"],
+    tags: ["Gemini", "CrewAI", "Socket.IO", "Next.js"],
     featured: true,
     icon: Bot,
     category: 'personal'
@@ -125,7 +125,7 @@ const projects: Project[] = [
     image: "/project_expense_tracker_1766892258626.png",
     link: "https://github.com/rajbhoyar729",
     github: "https://github.com/rajbhoyar729",
-    tags: ["React", "Charts.js", "Finance", "Node.js"],
+    tags: ["Next.js", "Charts.js", "Finance", "Node.js"],
     featured: true,
     icon: Database,
     category: 'personal'

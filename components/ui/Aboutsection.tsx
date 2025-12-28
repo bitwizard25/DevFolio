@@ -60,34 +60,21 @@ const AboutSection = () => {
 
   const experience = [
     {
-      title: 'Software Development Engineer (AI)',
+      title: 'Full Stack Engineer (AI & Backend)',
       company: 'NNIIT',
       companyUrl: 'https://nniit.com',
-      period: 'Nov 2025 - Present',
+      period: 'Jun 2025 - Present',
       location: 'Hyderabad',
       type: 'current',
-      description: 'Leading AI initiatives including RAG pipelines and intelligent automation',
+      description: 'Architecting scalable EdTech infrastructure & AI-driven automation systems',
       achievements: [
-        { text: 'Building RAG pipelines for transcript analysis with LangChain', metric: 'AI-Powered' },
-        { text: 'Developing intelligent automation systems for EdTech workflows', metric: 'Automation' },
+        { text: 'Built 60+ APIs for scheduling & implemented "Drive-like" LMS with recursive folder structures', metric: '60+ APIs' },
+        { text: 'Architected async "Producer-Worker" system using RabbitMQ for transcript analysis', metric: 'Huge Scale' },
+        { text: 'Developed AI Chatbot & natural language agents to automate workflows using FastAPI', metric: 'AI Agents' },
+        { text: 'Mentored interns on Transcript Sentiment Analysis, performance metrics & Flashcard generation', metric: 'Mentorship' },
+        { text: 'Integrated 3rd-party Payment Gateways, automated attendance tracking & cron job microservices', metric: 'Automation' },
       ],
-      techStack: ['LangChain', 'OpenAI', 'Python', 'Neo4j', 'Node.js'],
-    },
-    {
-      title: 'Full Stack Engineer',
-      company: 'NNIIT',
-      companyUrl: 'https://nniit.com',
-      period: 'Jun 2025 - Nov 2025',
-      location: 'Hyderabad',
-      type: 'past',
-      description: 'Built scalable EdTech backend with focus on performance and automation',
-      achievements: [
-        { text: 'Architected RabbitMQ message queue system processing 10K+ daily events', metric: '10K+ events/day' },
-        { text: 'Built MongoDB aggregation pipelines reducing API response by 60%', metric: '60% faster' },
-        { text: 'Integrated Zoho APIs with atomic locking preventing token race conditions', metric: 'Zero conflicts' },
-        { text: 'Developed automated cron pipelines for session management & transcript analysis', metric: '100% automated' },
-      ],
-      techStack: ['Node.js', 'MongoDB', 'RabbitMQ', 'Zoho API', 'MSG91'],
+      techStack: ['FastAPI', 'RabbitMQ', 'LangChain', 'Python', 'Neo4j', 'Node.js', 'React'],
     },
     {
       title: 'Founding Engineer',
