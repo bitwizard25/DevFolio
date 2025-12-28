@@ -1,52 +1,24 @@
 'use client'
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-}
+import { motion } from 'framer-motion';
 
 const AboutPreview = () => {
-    const sectionRef = useRef<HTMLElement>(null);
-    const contentRef = useRef<HTMLDivElement>(null);
-    const imageRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) return;
-
-        const ctx = gsap.context(() => {
-            gsap.fromTo(contentRef.current,
-                { opacity: 0, x: -40 },
-                {
-                    opacity: 1, x: 0, duration: 1, ease: 'power3.out',
-                    scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
-                }
-            );
-
-            gsap.fromTo(imageRef.current,
-                { opacity: 0, x: 40 },
-                {
-                    opacity: 1, x: 0, duration: 1, ease: 'power3.out',
-                    scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
-                }
-            );
-        }, sectionRef);
-
-        return () => ctx.revert();
-    }, []);
-
     return (
-        <section ref={sectionRef} data-scroll-section className="py-32 lg:py-40 relative">
+        <section data-scroll-section className="py-32 lg:py-40 relative">
             <div className="section-container">
                 <div className="grid lg:grid-cols-2 gap-20 items-center">
 
                     {/* Left - Content: Personality first */}
-                    <div ref={contentRef} className="space-y-8" style={{ opacity: 0 }}>
+                    <motion.div
+                        initial={{ opacity: 0, x: -40 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 1, ease: 'easeOut' }}
+                        viewport={{ once: true }}
+                        className="space-y-8"
+                    >
                         {/* Lead with personality, not credentials */}
                         <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
                             I love making<br />
@@ -73,10 +45,16 @@ const AboutPreview = () => {
                             <span className="font-medium">More about me</span>
                             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
-                    </div>
+                    </motion.div>
 
                     {/* Right - Visual: Clean card */}
-                    <div ref={imageRef} className="flex justify-center lg:justify-end" style={{ opacity: 0 }}>
+                    <motion.div
+                        initial={{ opacity: 0, x: 40 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 1, ease: 'easeOut' }}
+                        viewport={{ once: true }}
+                        className="flex justify-center lg:justify-end"
+                    >
                         <div className="relative">
                             {/* Glow */}
                             <div
@@ -119,7 +97,7 @@ const AboutPreview = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </section>

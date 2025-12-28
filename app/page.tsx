@@ -1,7 +1,7 @@
 import HeroSection from "@/components/ui/Herosection";
 import AboutPreview from "@/components/ui/AboutPreview";
 import SkillsSection from "@/components/ui/SkillsSection";
-import FeaturedProjects from "@/components/ui/FeaturedProjects";
+import ProjectsSection from "@/components/Project";
 import ExperienceTimeline from "@/components/ui/ExperienceTimeline";
 import StatsSection from "@/components/ui/StatsSection";
 import ContactCTA from "@/components/ui/ContactCTA";
@@ -22,7 +22,7 @@ export default function Home() {
       <SkillsSection />
 
       {/* Featured Projects - My Work */}
-      <FeaturedProjects />
+      <ProjectsSection />
 
       {/* Experience - My Journey */}
       <ExperienceTimeline />

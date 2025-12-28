@@ -1,62 +1,17 @@
 'use client'
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
-import { gsap } from 'gsap';
+import { motion } from 'framer-motion';
 import HeroCanvas from './HeroCanvas';
 
 const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
 
-  // Refs for GSAP animations
-  const sectionRef = useRef<HTMLElement>(null);
-  const nameRef = useRef<HTMLHeadingElement>(null);
-  const taglineRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLButtonElement>(null);
-
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // GSAP entrance animation
-  useEffect(() => {
-    if (!mounted) return;
-
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        defaults: { ease: 'power3.out' }
-      });
-
-      // Set initial states
-      gsap.set([nameRef.current, taglineRef.current, ctaRef.current], {
-        opacity: 0,
-        y: 30,
-      });
-      gsap.set(imageRef.current, {
-        opacity: 0,
-        scale: 0.95,
-      });
-      gsap.set(scrollRef.current, {
-        opacity: 0,
-      });
-
-      // Staggered reveal - name first, everything follows
-      tl.to(nameRef.current, { opacity: 1, y: 0, duration: 1 }, 0.3)
-        .to(taglineRef.current, { opacity: 1, y: 0, duration: 0.8 }, 0.6)
-        .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.8 }, 0.9)
-        .to(imageRef.current, { opacity: 1, scale: 1, duration: 1.2 }, 0.4)
-        .to(scrollRef.current, { opacity: 1, duration: 0.6 }, 1.4);
-
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [mounted]);
 
   const scrollToNext = () => {
     window.scrollTo({
@@ -65,9 +20,17 @@ const HeroSection = () => {
     });
   };
 
+  if (!mounted) {
+    return (
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Fallback or static version if needed for SSR, or just empty until hydration */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-[#0a0a0a]" />
+      </section>
+    );
+  }
+
   return (
     <section
-      ref={sectionRef}
       data-scroll-section
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
@@ -90,26 +53,33 @@ const HeroSection = () => {
           <div className="text-center lg:text-left space-y-8">
 
             {/* Name - Big, confident, memorable */}
-            <h1
-              ref={nameRef}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
               className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight"
-              style={{ opacity: 0 }}
             >
               <span className="text-white">Raj</span>
               <span className="block gradient-text mt-1">Bhoyar</span>
-            </h1>
+            </motion.h1>
 
             {/* Tagline - One line that sticks */}
-            <p
-              ref={taglineRef}
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
               className="text-xl md:text-2xl text-white/50 font-light max-w-md mx-auto lg:mx-0"
-              style={{ opacity: 0 }}
             >
               I build systems that scale.
-            </p>
+            </motion.p>
 
             {/* CTA - One primary action */}
-            <div ref={ctaRef} className="pt-4" style={{ opacity: 0 }}>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.9, ease: 'easeOut' }}
+              className="pt-4"
+            >
               <Link
                 href="#projects"
                 className="group inline-flex items-center gap-3 px-8 py-4 text-lg font-medium text-white 
@@ -141,11 +111,16 @@ const HeroSection = () => {
                   </a>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right - Image: Clean, no decorations */}
-          <div ref={imageRef} className="flex justify-center lg:justify-end" style={{ opacity: 0 }}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, delay: 0.4, ease: 'easeOut' }}
+            className="flex justify-center lg:justify-end"
+          >
             <div className="relative">
               {/* Soft glow behind image */}
               <div
@@ -167,20 +142,21 @@ const HeroSection = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Scroll indicator - Minimal */}
-        <button
-          ref={scrollRef}
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 1.4 }}
           onClick={scrollToNext}
           className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/20 hover:text-white/50 
                      transition-colors duration-300 cursor-pointer"
-          style={{ opacity: 0 }}
           aria-label="Scroll to next section"
         >
           <ArrowDown className="w-5 h-5 animate-float" />
-        </button>
+        </motion.button>
       </div>
     </section>
   );

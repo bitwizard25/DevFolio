@@ -106,16 +106,22 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
         {/* Card Content */}
         <div className="relative card p-0 overflow-hidden">
           {/* Project Image/Header */}
-          <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900">
+          <div className="relative h-48 overflow-hidden group-hover:h-48 transition-all duration-500">
+            <Image
+              src={project.image}
+              alt={project.title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-slate-900/60 group-hover:bg-slate-900/40 transition-colors duration-500" />
+
             {/* Icon Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className={`p-6 rounded-2xl glass transition-all duration-500 ${isHovered ? 'scale-110 bg-cyan-500/20' : ''
-                }`}>
-                <IconComponent className={`w-16 h-16 transition-colors duration-300 ${isHovered ? 'text-cyan-400' : 'text-slate-600'
-                  }`} />
+            <div className="absolute inset-0 flex items-center justify-center opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+              <div className={`p-4 rounded-2xl glass`}>
+                <IconComponent className="w-10 h-10 text-slate-300" />
               </div>
             </div>
-
             {/* Hover Overlay with Links */}
             <div className={`absolute inset-0 bg-slate-900/90 flex items-center justify-center gap-4 transition-all duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'
               }`}>

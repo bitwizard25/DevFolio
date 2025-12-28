@@ -1,36 +1,10 @@
-'use client'
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Mail, Linkedin, ArrowRight } from 'lucide-react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-}
+import { motion } from 'framer-motion';
 
 const ContactCTA = () => {
-    const sectionRef = useRef<HTMLElement>(null);
-    const contentRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) return;
-
-        const ctx = gsap.context(() => {
-            gsap.fromTo(contentRef.current,
-                { opacity: 0, y: 40 },
-                {
-                    opacity: 1, y: 0, duration: 1, ease: 'power3.out',
-                    scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
-                }
-            );
-        }, sectionRef);
-
-        return () => ctx.revert();
-    }, []);
-
     return (
-        <section ref={sectionRef} data-scroll-section className="py-32 lg:py-40 relative">
+        <section data-scroll-section className="py-32 lg:py-40 relative">
             {/* Subtle glow */}
             <div
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-[100px]"
@@ -38,7 +12,13 @@ const ContactCTA = () => {
             />
 
             <div className="section-container relative z-10">
-                <div ref={contentRef} className="max-w-2xl mx-auto text-center" style={{ opacity: 0 }}>
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, ease: 'easeOut' }}
+                    viewport={{ once: true }}
+                    className="max-w-2xl mx-auto text-center"
+                >
 
                     {/* Headline - Simple, inviting */}
                     <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
@@ -78,7 +58,7 @@ const ContactCTA = () => {
                             LinkedIn
                         </a>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </section>
     );

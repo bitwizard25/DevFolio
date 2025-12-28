@@ -1,13 +1,8 @@
 'use client'
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Briefcase, GraduationCap, Award } from 'lucide-react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-}
+import { motion } from 'framer-motion';
 
 const experiences = [
     {
@@ -73,87 +68,20 @@ const experiences = [
 ];
 
 const ExperienceTimeline = () => {
-    const sectionRef = useRef<HTMLElement>(null);
-    const headerRef = useRef<HTMLDivElement>(null);
-    const timelineRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) return;
-
-        const ctx = gsap.context(() => {
-            // Header animation
-            gsap.from(headerRef.current, {
-                opacity: 0,
-                y: 40,
-                duration: 0.8,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: headerRef.current,
-                    start: 'top 85%',
-                },
-            });
-
-            // Timeline line animation
-            const line = timelineRef.current?.querySelector('.timeline-line');
-            if (line) {
-                gsap.fromTo(line,
-                    { scaleY: 0 },
-                    {
-                        scaleY: 1,
-                        duration: 1.5,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: timelineRef.current,
-                            start: 'top 80%',
-                        },
-                    }
-                );
-            }
-
-            // Timeline items stagger
-            const items = timelineRef.current?.querySelectorAll('.timeline-item');
-            if (items) {
-                gsap.from(items, {
-                    opacity: 0,
-                    x: -40,
-                    duration: 0.8,
-                    stagger: 0.2,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: timelineRef.current,
-                        start: 'top 75%',
-                    },
-                });
-            }
-
-            // Timeline dots
-            const dots = timelineRef.current?.querySelectorAll('.timeline-dot');
-            if (dots) {
-                gsap.from(dots, {
-                    scale: 0,
-                    duration: 0.5,
-                    stagger: 0.2,
-                    ease: 'back.out(2)',
-                    scrollTrigger: {
-                        trigger: timelineRef.current,
-                        start: 'top 75%',
-                    },
-                });
-            }
-        }, sectionRef);
-
-        return () => ctx.revert();
-    }, []);
-
     return (
-        <section ref={sectionRef} data-scroll-section className="py-24 lg:py-32 relative">
+        <section data-scroll-section className="py-24 lg:py-32 relative">
             {/* Background */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent" />
 
             <div className="section-container relative z-10">
                 {/* Header */}
-                <div ref={headerRef} className="text-center mb-16">
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    viewport={{ once: true }}
+                    className="text-center mb-16"
+                >
                     <p className="text-overline text-[#0A84FF] mb-3">My Journey</p>
                     <h2 className="section-title">
                         Experience & <span className="gradient-text">Education</span>
@@ -161,13 +89,17 @@ const ExperienceTimeline = () => {
                     <p className="text-white/50 max-w-2xl mx-auto text-body-large">
                         From academic foundations to building production systems at scale
                     </p>
-                </div>
+                </motion.div>
 
                 {/* Timeline */}
-                <div ref={timelineRef} className="max-w-3xl mx-auto">
+                <div className="max-w-3xl mx-auto">
                     <div className="relative">
                         {/* Animated timeline line */}
-                        <div
+                        <motion.div
+                            initial={{ scaleY: 0 }}
+                            whileInView={{ scaleY: 1 }}
+                            transition={{ duration: 1.5, ease: "easeOut" }}
+                            viewport={{ once: true }}
                             className="timeline-line absolute left-8 top-0 bottom-0 w-px origin-top"
                             style={{
                                 background: 'linear-gradient(180deg, #0A84FF 0%, #BF5AF2 50%, #32D74B 100%)',
@@ -181,13 +113,23 @@ const ExperienceTimeline = () => {
                                 return (
                                     <div key={index} className="timeline-item relative pl-20">
                                         {/* Dot */}
-                                        <div
+                                        <motion.div
+                                            initial={{ scale: 0 }}
+                                            whileInView={{ scale: 1 }}
+                                            transition={{ duration: 0.5, delay: index * 0.1, ease: "backOut" }}
+                                            viewport={{ once: true }}
                                             className="timeline-dot absolute left-6 w-5 h-5 rounded-full border-4 border-black z-10"
                                             style={{ backgroundColor: exp.color }}
                                         />
 
                                         {/* Card */}
-                                        <div className="card p-6">
+                                        <motion.div
+                                            initial={{ opacity: 0, x: -40 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
+                                            viewport={{ once: true }}
+                                            className="card p-6"
+                                        >
                                             <div className="flex items-start gap-4">
                                                 {/* Icon */}
                                                 <div
@@ -224,7 +166,7 @@ const ExperienceTimeline = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </motion.div>
                                     </div>
                                 );
                             })}
