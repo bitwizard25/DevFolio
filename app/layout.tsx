@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/ui/Footer";
 import ClientLayout from "@/components/ClientLayout";
+import CommandMenu from "@/components/ui/CommandMenu";
+import RealTimePulse from "@/components/ui/RealTimePulse";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -35,6 +37,8 @@ export default function RootLayout({
       >
         <ClientLayout>
           <div className="relative min-h-screen flex flex-col">
+            <CommandMenu />
+            <RealTimePulse />
             <Navbar />
             <main className="flex-grow">
               {children}

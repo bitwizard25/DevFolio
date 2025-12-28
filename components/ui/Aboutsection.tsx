@@ -1,15 +1,18 @@
 'use client'
 import React, { useState } from 'react';
-import { Code2 as Code, Briefcase, GraduationCap, ChevronRight, Award, Users, ExternalLink } from 'lucide-react';
+import { Code2 as Code, Briefcase, GraduationCap, ChevronRight, Award, Users, ExternalLink, Cpu } from 'lucide-react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import SystemArchitecture from './SystemArchitecture';
 
 const AboutSection = () => {
   const [activeTab, setActiveTab] = useState('skills');
+  const [hoveredSkill, setHoveredSkill] = useState<{ name: string; related: string[] } | null>(null);
 
   const tabs = [
     { id: 'skills', label: 'Skills', icon: Code },
     { id: 'experience', label: 'Experience', icon: Briefcase },
+    { id: 'architecture', label: 'Architecture', icon: Cpu },
     { id: 'education', label: 'Education', icon: GraduationCap },
     { id: 'certifications', label: 'Achievements', icon: Award },
   ];
@@ -18,39 +21,39 @@ const AboutSection = () => {
     {
       category: 'Backend Development',
       items: [
-        { name: 'Node.js/Express', level: 90 },
-        { name: 'Python (Flask/Django)', level: 88 },
-        { name: 'RESTful API Design', level: 92 },
-        { name: 'GraphQL', level: 75 },
+        { name: 'Node.js/Express', level: 90, related: ['NNIIT', 'Games World League'] },
+        { name: 'Python (FastApi/Django)', level: 88, related: ['NNIIT', 'BlueKei'] },
+        { name: 'RESTful API Design', level: 92, related: ['NNIIT', 'Games World League'] },
+        { name: 'GraphQL', level: 75, related: ['Personal Projects'] },
       ]
     },
     {
       category: 'Database & Message Queues',
       items: [
-        { name: 'MongoDB/Aggregations', level: 90 },
-        { name: 'PostgreSQL', level: 85 },
-        { name: 'Neo4j (Graph DB)', level: 82 },
-        { name: 'RabbitMQ', level: 85 },
-        { name: 'Redis', level: 78 },
+        { name: 'MongoDB/Aggregations', level: 90, related: ['NNIIT', 'Games World League'] },
+        { name: 'PostgreSQL', level: 85, related: ['NNIIT', 'Personal Projects'] },
+        { name: 'Neo4j (Graph DB)', level: 82, related: ['NNIIT', 'BlueKei'] },
+        { name: 'RabbitMQ', level: 85, related: ['NNIIT (10k events/day)'] },
+        { name: 'Redis', level: 78, related: ['NNIIT'] },
       ]
     },
     {
       category: 'AI/ML & LLMs',
       items: [
-        { name: 'LangChain/LangGraph', level: 88 },
-        { name: 'OpenAI/Gemini/Groq', level: 85 },
-        { name: 'RAG & Chroma', level: 82 },
-        { name: 'CrewAI', level: 78 },
-        { name: 'MCP', level: 75 },
+        { name: 'LangChain/LangGraph', level: 88, related: ['NNIIT', 'Wizard Vibe'] },
+        { name: 'OpenAI/Gemini/Groq', level: 85, related: ['NNIIT'] },
+        { name: 'RAG & Chroma', level: 82, related: ['NNIIT'] },
+        { name: 'CrewAI', level: 78, related: ['Personal Projects'] },
+        { name: 'MCP', level: 75, related: ['Personal Projects'] },
       ]
     },
     {
       category: 'Others & Integrations',
       items: [
-        { name: 'Zoho/MSG91 APIs', level: 88 },
-        { name: 'Google Sheets API', level: 85 },
-        { name: 'Git/Docker/CI-CD', level: 85 },
-        { name: 'Payment Gateways', level: 80 },
+        { name: 'Zoho/MSG91 APIs', level: 88, related: ['NNIIT'] },
+        { name: 'Google Sheets API', level: 85, related: ['NNIIT', 'TFL'] },
+        { name: 'Git/Docker/CI-CD', level: 85, related: ['All Projects'] },
+        { name: 'Payment Gateways', level: 80, related: ['NNIIT'] },
       ]
     },
   ];
@@ -298,9 +301,25 @@ const AboutSection = () => {
                         </h4>
                         <div className="space-y-3">
                           {skillSet.items.map((skill, skillIndex) => (
-                            <div key={skillIndex}>
+                            <div
+                              key={skillIndex}
+                              onMouseEnter={() => setHoveredSkill({ name: skill.name, related: skill.related })}
+                              onMouseLeave={() => setHoveredSkill(null)}
+                              className="group cursor-default"
+                            >
                               <div className="flex justify-between text-sm mb-1">
-                                <span className="text-slate-300">{skill.name}</span>
+                                <span className={`transition-colors duration-300 ${hoveredSkill?.name === skill.name ? 'text-white font-medium' : 'text-slate-300'}`}>
+                                  {skill.name}
+                                  {hoveredSkill?.name === skill.name && (
+                                    <motion.span
+                                      initial={{ opacity: 0, x: -10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      className="ml-2 text-xs text-emerald-400 font-normal"
+                                    >
+                                      • Used at {skill.related.join(', ')}
+                                    </motion.span>
+                                  )}
+                                </span>
                                 <span className="text-slate-500">{skill.level}%</span>
                               </div>
                               <div className="h-2 bg-slate-700/50 rounded-full overflow-hidden">
@@ -309,7 +328,7 @@ const AboutSection = () => {
                                   whileInView={{ width: `${skill.level}%` }}
                                   transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
                                   viewport={{ once: true }}
-                                  className="h-full bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full"
+                                  className={`h-full rounded-full transition-colors duration-300 ${hoveredSkill?.name === skill.name ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-gradient-to-r from-cyan-500 to-purple-500'}`}
                                 />
                               </div>
                             </div>
@@ -392,6 +411,18 @@ const AboutSection = () => {
                         )}
                       </motion.div>
                     ))}
+                  </motion.div>
+                )}
+
+                {/* Architecture Tab */}
+                {activeTab === 'architecture' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <SystemArchitecture />
                   </motion.div>
                 )}
 

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 const skillGroups = [
     {
         label: 'Backend',
-        skills: ['Node.js', 'Express', 'Python', 'Django', 'REST APIs', 'GraphQL'],
+        skills: ['Node.js', 'Express', 'Python (FastApi/Django)', 'REST APIs', 'GraphQL'],
         color: '#0A84FF',
     },
     {
