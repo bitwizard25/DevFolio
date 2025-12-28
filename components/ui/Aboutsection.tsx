@@ -171,9 +171,7 @@ const AboutSection = () => {
     { name: 'Web Development Diploma', issuer: 'Udemy', type: 'course' },
   ];
 
-  const projects = [
-    { name: 'Block Vote', description: 'Blockchain-based e-voting app with tamper-proof vote recording', period: 'Jan - May 2023' },
-  ];
+  const projects: { name: string; description: string; period: string }[] = [];
 
   return (
     <section data-scroll-section className="min-h-screen py-20">

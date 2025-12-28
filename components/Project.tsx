@@ -45,19 +45,7 @@ const projects: Project[] = [
     icon: Database,
     metrics: "60% faster"
   },
-  {
-    id: 3,
-    title: "Block Vote - Blockchain E-Voting",
-    description: "Decentralized voting app with tamper-proof records using blockchain technology.",
-    longDescription: "Blockchain-based electronic voting application ensuring integrity and immutability of voting data with auditable records.",
-    image: "/Chatbot.jpg",
-    link: "#",
-    github: "https://github.com/rajbhoyar729",
-    tags: ["Blockchain", "Python", "Security", "Cryptography"],
-    featured: true,
-    icon: Shield,
-    metrics: "Tamper-proof"
-  },
+
   {
     id: 4,
     title: "AI Assistant with CrewAI",
@@ -226,9 +214,11 @@ const ProjectsSection = () => {
         </div>
 
         {/* Featured Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="flex flex-wrap justify-center gap-6 mb-12">
           {featuredProjects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+            <div key={project.id} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md">
+              <ProjectCard project={project} index={index} />
+            </div>
           ))}
         </div>
 

@@ -138,8 +138,7 @@ html.lenis body {
 }
 
 html {
-  scroll-behavior: auto;
-  /* Let Lenis handle smooth scrolling */
+  scroll-behavior: smooth;
 }
 
 body {

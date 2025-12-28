@@ -1,16 +1,7 @@
 'use client'
-import dynamic from 'next/dynamic';
-
-// Dynamic import with SSR disabled - Locomotive Scroll needs document
-const SmoothScrollProvider = dynamic(
-    () => import("@/components/SmoothScrollProvider"),
-    { ssr: false }
-);
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
-    return (
-        <SmoothScrollProvider>
-            {children}
-        </SmoothScrollProvider>
-    );
+    // Removed Locomotive Scroll - was causing SSR issues and slow loading
+    // Site works fine with CSS smooth scrolling
+    return <>{children}</>;
 }
