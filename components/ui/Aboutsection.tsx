@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Code2 as Code, Briefcase, GraduationCap, ChevronRight, Award, Users, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const AboutSection = () => {
   const [activeTab, setActiveTab] = useState('skills');
@@ -27,6 +28,7 @@ const AboutSection = () => {
       category: 'Database & Message Queues',
       items: [
         { name: 'MongoDB/Aggregations', level: 90 },
+        { name: 'PostgreSQL', level: 85 },
         { name: 'Neo4j (Graph DB)', level: 82 },
         { name: 'RabbitMQ', level: 85 },
         { name: 'Redis', level: 78 },
@@ -256,19 +258,23 @@ const AboutSection = () => {
           {/* Content Area */}
           <div className="lg:col-span-2 animate-slide-up animation-delay-200">
             <div className="card overflow-hidden">
-              {/* Tabs */}
-              <div className="flex border-b border-slate-700 overflow-x-auto">
+              {/* Tabs - Interactive Pill Design */}
+              <div className="flex p-1 mb-8 bg-slate-900/50 backdrop-blur-md rounded-2xl border border-white/10 overflow-x-auto no-scrollbar">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex-1 min-w-[100px] flex items-center justify-center gap-2 px-3 py-4 font-medium transition-all duration-300 ${activeTab === tab.id
-                      ? 'text-cyan-400 border-b-2 border-cyan-400 bg-cyan-500/5'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-                      }`}
+                    className={`relative flex-1 min-w-[100px] flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors duration-300 ${activeTab === tab.id ? 'text-white' : 'text-slate-400 hover:text-slate-200'}`}
                   >
-                    <tab.icon className="w-4 h-4" />
-                    <span className="hidden sm:inline text-sm">{tab.label}</span>
+                    {activeTab === tab.id && (
+                      <motion.div
+                        layoutId="activeTab"
+                        className="absolute inset-0 bg-white/10 rounded-xl border border-white/10 shadow-sm"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                    <tab.icon className="relative z-10 w-4 h-4" />
+                    <span className="relative z-10 hidden sm:inline">{tab.label}</span>
                   </button>
                 ))}
               </div>
@@ -277,7 +283,13 @@ const AboutSection = () => {
               <div className="p-6">
                 {/* Skills Tab */}
                 {activeTab === 'skills' && (
-                  <div className="grid sm:grid-cols-2 gap-6 animate-fade-in">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="grid sm:grid-cols-2 gap-6"
+                  >
                     {skills.map((skillSet, index) => (
                       <div key={index} className="space-y-4">
                         <h4 className="font-semibold text-slate-200 flex items-center gap-2">
@@ -291,10 +303,13 @@ const AboutSection = () => {
                                 <span className="text-slate-300">{skill.name}</span>
                                 <span className="text-slate-500">{skill.level}%</span>
                               </div>
-                              <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                                <div
-                                  className="h-full bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full transition-all duration-1000"
-                                  style={{ width: `${skill.level}%` }}
+                              <div className="h-2 bg-slate-700/50 rounded-full overflow-hidden">
+                                <motion.div
+                                  initial={{ width: 0 }}
+                                  whileInView={{ width: `${skill.level}%` }}
+                                  transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                                  viewport={{ once: true }}
+                                  className="h-full bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full"
                                 />
                               </div>
                             </div>
@@ -302,14 +317,27 @@ const AboutSection = () => {
                         </div>
                       </div>
                     ))}
-                  </div>
+                  </motion.div>
                 )}
 
                 {/* Experience Tab */}
                 {activeTab === 'experience' && (
-                  <div className="space-y-8 animate-fade-in">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-8"
+                  >
                     {experience.map((exp, index) => (
-                      <div key={index} className="relative pl-6 border-l-2 border-cyan-500/30">
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        viewport={{ once: true }}
+                        className="relative pl-6 border-l-2 border-cyan-500/30"
+                      >
                         <div className={`absolute -left-2.5 top-0 w-5 h-5 rounded-full border-4 border-slate-800 ${exp.type === 'current' ? 'bg-emerald-500 animate-pulse' : 'bg-cyan-500'
                           }`} />
                         <div className="mb-3">
@@ -362,16 +390,29 @@ const AboutSection = () => {
                             ))}
                           </div>
                         )}
-                      </div>
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                 )}
 
                 {/* Education Tab */}
                 {activeTab === 'education' && (
-                  <div className="space-y-6 animate-fade-in">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6"
+                  >
                     {education.map((edu, index) => (
-                      <div key={index} className="relative pl-6 border-l-2 border-purple-500/30">
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        viewport={{ once: true }}
+                        className="relative pl-6 border-l-2 border-purple-500/30"
+                      >
                         <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-purple-500 border-4 border-slate-800" />
                         <h4 className="text-xl font-semibold text-slate-100">{edu.degree}</h4>
                         <p className="text-purple-400">{edu.institution}</p>
@@ -390,11 +431,16 @@ const AboutSection = () => {
                             ))}
                           </div>
                         )}
-                      </div>
+                      </motion.div>
                     ))}
 
                     {/* Notable Project */}
-                    <div className="mt-6 p-4 rounded-lg bg-slate-800/30 border border-slate-700">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="mt-6 p-4 rounded-lg bg-slate-800/30 border border-slate-700"
+                    >
                       <h4 className="font-semibold text-slate-200 mb-2 flex items-center gap-2">
                         <Award className="w-4 h-4 text-cyan-400" />
                         Notable Academic Project
@@ -406,13 +452,18 @@ const AboutSection = () => {
                           <p className="text-slate-500 text-xs mt-1">{proj.period}</p>
                         </div>
                       ))}
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
                 )}
 
                 {/* Certifications Tab */}
                 {activeTab === 'certifications' && (
-                  <div className="animate-fade-in">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     {/* Highlighted Achievements */}
                     <div className="mb-6">
                       <h4 className="font-semibold text-slate-200 mb-3 flex items-center gap-2">
@@ -421,10 +472,16 @@ const AboutSection = () => {
                       </h4>
                       <div className="grid sm:grid-cols-2 gap-3">
                         {certifications.filter(c => c.highlight).map((cert, i) => (
-                          <div key={i} className="p-4 rounded-lg bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/30">
+                          <motion.div
+                            key={i}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: i * 0.1 }}
+                            className="p-4 rounded-lg bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 hover:border-yellow-500/50 transition-colors"
+                          >
                             <p className="font-medium text-slate-100">{cert.name}</p>
                             <p className="text-slate-400 text-sm">{cert.issuer}</p>
-                          </div>
+                          </motion.div>
                         ))}
                       </div>
                     </div>
@@ -433,16 +490,22 @@ const AboutSection = () => {
                     <h4 className="font-semibold text-slate-200 mb-3">Certifications & Courses</h4>
                     <div className="grid sm:grid-cols-2 gap-2">
                       {certifications.filter(c => !c.highlight).map((cert, i) => (
-                        <div key={i} className="flex items-center gap-2 p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2 + (i * 0.05) }}
+                          className="flex items-center gap-2 p-3 rounded-lg bg-slate-800/30 border border-slate-700/50 hover:bg-slate-800/50 transition-colors"
+                        >
                           <Award className="w-4 h-4 text-cyan-400 flex-shrink-0" />
                           <div className="min-w-0">
                             <p className="text-slate-200 text-sm truncate">{cert.name}</p>
                             <p className="text-slate-500 text-xs">{cert.issuer}</p>
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 )}
               </div>
             </div>

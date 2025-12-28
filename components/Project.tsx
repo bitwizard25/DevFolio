@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, Folder, Server, Database, Bot, GitBranch, TrendingUp, Lock, Award, Code2 } from 'lucide-react';
+import { ExternalLink, Github, Folder, Server, Database, Bot, GitBranch, TrendingUp, Lock, Award, Code2, Users } from 'lucide-react';
 
 // Simple Briefcase Icon component for usage
 const BriefcaseIcon = ({ className }: { className?: string }) => (
@@ -93,41 +93,41 @@ const projects: Project[] = [
   // Personal Projects
   {
     id: 101,
-    title: "Code4GovTech Contributor",
-    description: "Selected for C4GT '23. Contributed to open-source digital public goods infrastructure.",
-    longDescription: "Part of the prestigious Code4GovTech program, contributing to scalable government-tech solutions.",
-    image: "/project_code4govtech_1766890271802.png",
-    link: "https://www.code4govtech.in/",
-    github: "https://github.com/rajbhoyar729",
-    tags: ["Open Source", "GovTech", "Public Goods"],
+    title: "Lok Darpan",
+    description: "A digital platform reflecting social dynamics and civic engagement. MERN Stack application.",
+    longDescription: "Built a comprehensive full-stack application (MERN) to facilitate transparency and digital civic engagement.",
+    image: "/project_lok_darpan_1766892221259.png",
+    link: "https://github.com/rajbhoyar729/LokDarpan",
+    github: "https://github.com/rajbhoyar729/LokDarpan",
+    tags: ["MERN Stack", "React", "Node.js", "Social"],
     featured: true,
-    icon: Code2,
+    icon: Users,
     category: 'personal'
   },
   {
     id: 102,
-    title: "Flipkart GRiD 4.0",
-    description: "National finalist in Flipkart's flagship engineering challenge solving robotics/AI problems.",
-    longDescription: "Developed innovative solutions for e-commerce logistics and warehousing challenges.",
-    image: "/project_flipkart_grid_1766890287643.png",
-    link: "#",
-    github: "https://github.com/rajbhoyar729",
-    tags: ["Hackathon", "Problem Solving", "Innovation"],
+    title: "Wizard Vibe",
+    description: "AI-powered productivity assistant with real-time collaboration and smart task automation.",
+    longDescription: "Developed an intelligent assistant using OpenAI, LangChain, and Socket.IO for real-time features and meeting summaries.",
+    image: "/project_wizard_vibe_1766892242642.png",
+    link: "https://github.com/rajbhoyar729/Wizard-Vibe",
+    github: "https://github.com/rajbhoyar729/Wizard-Vibe",
+    tags: ["AI", "LangChain", "Socket.IO", "MERN"],
     featured: true,
-    icon: Award,
+    icon: Bot,
     category: 'personal'
   },
   {
     id: 103,
-    title: "Portfolio Website",
-    description: "Modern portfolio built with Next.js, Framer Motion, and Tailwind CSS.",
-    longDescription: "A high-performance personal website featuring smooth animations and component-based architecture.",
-    image: "/project_portfolio_web_1766890303751.png",
-    link: "#",
-    github: "https://github.com/rajbhoyar729/DevFolio",
-    tags: ["Next.js", "React", "Tailwind", "Framer Motion"],
-    featured: false,
-    icon: Server, // Using generic icon
+    title: "Expense Tracker",
+    description: "Full-stack financial dashboard for tracking expenses with data visualization.",
+    longDescription: "created a personal finance management tool with interactive charts and secure transactions processing.",
+    image: "/project_expense_tracker_1766892258626.png",
+    link: "https://github.com/rajbhoyar729",
+    github: "https://github.com/rajbhoyar729",
+    tags: ["React", "Charts.js", "Finance", "Node.js"],
+    featured: true,
+    icon: Database,
     category: 'personal'
   }
 ];

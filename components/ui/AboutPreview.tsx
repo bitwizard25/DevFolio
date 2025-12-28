@@ -11,39 +11,50 @@ const AboutPreview = () => {
             <div className="section-container">
                 <div className="grid lg:grid-cols-2 gap-20 items-center">
 
-                    {/* Left - Content: Personality first */}
                     <motion.div
                         initial={{ opacity: 0, x: -40 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 1, ease: 'easeOut' }}
                         viewport={{ once: true }}
-                        className="space-y-8"
+                        className="space-y-10"
                     >
-                        {/* Lead with personality, not credentials */}
+                        {/* Lead with personality */}
                         <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
                             I love making<br />
                             <span className="gradient-text">complex things simple.</span>
                         </h2>
 
-                        <div className="space-y-6 text-lg text-white/50 leading-relaxed">
-                            <p>
-                                Software Development Engineer (AI) at NNIIT, where I build RAG pipelines
-                                and intelligent systems. Previously a Founding Engineer at Games World League.
+                        {/* Miller's Law: Chunking information into 3 distinct beats */}
+                        <div className="space-y-6">
+                            <p className="text-lg text-white/60 leading-relaxed max-w-xl">
+                                I'm a software engineer who bridges the gap between complex backend systems and intuitive user experiences.
                             </p>
-                            <p>
-                                LangChain, Node.js, MongoDB, Neo4j — and a healthy obsession with clean code.
-                                B.Tech CSE from BDCOE Wardha.
-                            </p>
+
+                            <div className="grid gap-4">
+                                {[
+                                    { icon: "🚀", title: "AI Specialist", desc: "Building RAG pipelines & Intelligent Systems" },
+                                    { icon: "💡", title: "Founding Engineer", desc: "Scaled startup tech from 0 to Production" },
+                                    { icon: "🔧", title: "Backend Architect", desc: "High-performance systems (10k+ events/day)" }
+                                ].map((item, i) => (
+                                    <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-colors">
+                                        <span className="text-2xl">{item.icon}</span>
+                                        <div>
+                                            <h4 className="font-bold text-white">{item.title}</h4>
+                                            <p className="text-sm text-white/50">{item.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
-                        {/* Single CTA */}
+                        {/* Fitts's Law: Large touch target for primary action */}
                         <Link
                             href="/about"
-                            className="group inline-flex items-center gap-2 text-white/70 hover:text-white 
-                                     transition-colors duration-300"
+                            className="group relative inline-flex items-center gap-3 px-8 py-4 text-lg font-medium text-white bg-white/10 rounded-full overflow-hidden transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] backdrop-blur-md border border-white/10"
                         >
-                            <span className="font-medium">More about me</span>
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            <span className="relative z-10">More about me</span>
+                            <ArrowRight className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </Link>
                     </motion.div>
 

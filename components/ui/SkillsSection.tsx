@@ -10,7 +10,7 @@ const skillGroups = [
     },
     {
         label: 'Databases',
-        skills: ['MongoDB', 'Neo4j', 'Redis', 'RabbitMQ'],
+        skills: ['MongoDB', 'PostgreSQL', 'Neo4j', 'Redis', 'RabbitMQ'],
         color: '#32D74B',
     },
     {
