@@ -4,8 +4,10 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/ui/Footer";
 import ClientLayout from "@/components/ClientLayout";
+import dynamic from 'next/dynamic';
 import CommandMenu from "@/components/ui/CommandMenu";
 import RealTimePulse from "@/components/ui/RealTimePulse";
+import ResumeModalWrapper from "@/components/ui/ResumeModalWrapper";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,7 +21,7 @@ export const metadata: Metadata = {
   keywords: ["Full Stack Developer", "Software Developer", "AI/ML", "Python", "Node.js", "React", "Portfolio"],
   authors: [{ name: "Raj Bhoyar" }],
   openGraph: {
-    title: "Raj Bhoyar | Full Stack Developer & AI Enthusiast",
+    title: "Raj Bhoyar | Full Stack Developer | AI Enthusiast",
     description: "Portfolio of Raj Bhoyar - Full Stack Developer specializing in Backend Development, AI/ML, and scalable systems.",
     type: "website",
   },
@@ -37,6 +39,7 @@ export default function RootLayout({
       >
         <ClientLayout>
           <div className="relative min-h-screen flex flex-col">
+            <ResumeModalWrapper />
             <CommandMenu />
             <RealTimePulse />
             <Navbar />

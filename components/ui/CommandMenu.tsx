@@ -99,7 +99,7 @@ const CommandMenu = () => {
                                         <span>GitHub</span>
                                     </Command.Item>
                                     <Command.Item
-                                        onSelect={() => runCommand(() => window.open('/resume.pdf', '_blank'))} // Assumption: resume exists
+                                        onSelect={() => runCommand(() => window.dispatchEvent(new CustomEvent('open-resume-modal')))}
                                         className="flex cursor-pointer select-none items-center rounded-lg px-2 py-2 text-sm text-slate-200 hover:bg-white/10 hover:text-white transition-colors aria-selected:bg-white/10 aria-selected:text-white"
                                     >
                                         <FileText className="mr-2 h-4 w-4" />

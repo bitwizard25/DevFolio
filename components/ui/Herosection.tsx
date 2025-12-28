@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowDown, Github, Linkedin, Mail, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
 import HeroCanvas from './HeroCanvas';
 
@@ -99,17 +99,22 @@ const HeroSection = () => {
                   { icon: Github, href: 'https://github.com/rajbhoyar729', label: 'GitHub' },
                   { icon: Linkedin, href: 'https://linkedin.com/in/raj-bhoyar-b597b416a/', label: 'LinkedIn' },
                   { icon: Mail, href: 'mailto:rbhoyar729@gmail.com', label: 'Email' },
+                  { icon: FileText, href: 'https://drive.google.com/file/d/1lwzsz2Lcr2Zx6kogBPWguSJX2Vbku7xM/view?usp=sharing', label: 'Resume' },
                 ].map((social) => (
-                  <a
+                  <button
                     key={social.label}
-                    href={social.href}
-                    target={social.href.startsWith('mailto') ? undefined : '_blank'}
-                    rel={social.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+                    onClick={() => {
+                      if (social.label === 'Resume') {
+                        window.dispatchEvent(new CustomEvent('open-resume-modal'));
+                      } else {
+                        window.open(social.href, '_blank');
+                      }
+                    }}
                     className="group p-2 text-slate-400 hover:text-white transition-colors duration-300"
                     aria-label={social.label}
                   >
                     <social.icon className="w-6 h-6 transform group-hover:scale-110 transition-transform" />
-                  </a>
+                  </button>
                 ))}
               </div>
             </motion.div>
