@@ -6,6 +6,22 @@ import { Mail, Video, MessageSquare, ExternalLink, Send } from 'lucide-react';
 
 const EMAIL = 'rbhoyar729@gmail.com';
 
+// Real delivery via Web3Forms (https://web3forms.com). The access key is designed to be
+// public/client-side (it can only submit to the inbox it's registered for), so a baked-in
+// default is safe — the env var still wins if set. If both are somehow absent the chat
+// gracefully hands the typed message off to the visitor's email client instead.
+const WEB3FORMS_KEY =
+  process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? '1dec5956-5f72-4193-b91f-0ae0414b9b82';
+
+interface ChatMessage {
+  sender: 'user' | 'raj';
+  text: string;
+  time: string;
+  status?: 'sending' | 'delivered' | 'failed';
+  /** When set, the status line becomes a mailto link carrying this body */
+  mailtoBody?: string;
+}
+
 /** Renders message text with any email mention turned into a real mailto link */
 function withMailtoLinks(text: string) {
   const parts = text.split(EMAIL);
@@ -23,16 +39,21 @@ function withMailtoLinks(text: string) {
 
 export default function ContactApp() {
   const [selectedId, setSelectedId] = useState<'profile' | 'socials' | 'message'>('profile');
-  const [messages, setMessages] = useState<Array<{ sender: 'user' | 'raj'; text: string; time: string }>>([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     { sender: 'raj', text: `Hey! Thanks for visiting my Portfolio OS. Feel free to leave a message here, or email me directly at ${EMAIL}!`, time: 'Just now' },
   ]);
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const mounted = useRef(true);
 
-  // Guard against a state update after the window closes mid-reply
-  useEffect(() => () => {
-    if (replyTimer.current) clearTimeout(replyTimer.current);
+  // Guard against state updates after the window closes mid-send/mid-reply
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      if (replyTimer.current) clearTimeout(replyTimer.current);
+    };
   }, []);
 
   const contacts = [
@@ -45,28 +66,84 @@ export default function ContactApp() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const queueReply = (text: string) => {
+    replyTimer.current = setTimeout(() => {
+      if (!mounted.current) return;
+      setMessages((prev) => [...prev, { sender: 'raj', text, time: 'Just now' }]);
+    }, 900);
+  };
+
+  const updateLastUserMessage = (patch: Partial<ChatMessage>) => {
+    setMessages((prev) => {
+      const next = [...prev];
+      for (let i = next.length - 1; i >= 0; i--) {
+        if (next[i].sender === 'user') {
+          next[i] = { ...next[i], ...patch };
+          break;
+        }
+      }
+      return next;
+    });
+  };
+
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
 
     const userMessage = inputValue.trim();
-    setMessages((prev) => [
-      ...prev,
-      { sender: 'user', text: userMessage, time: 'Just now' },
-    ]);
     setInputValue('');
 
-    // Trigger mock auto-reply
-    replyTimer.current = setTimeout(() => {
-      let reply = `Awesome! I've received your note in my sandbox. The best way to lock in a call is via email at ${EMAIL}. Speak soon!`;
-      if (userMessage.toLowerCase().includes('job') || userMessage.toLowerCase().includes('hire')) {
-        reply = `I'm always open to new backend & AI opportunities! Feel free to forward details/JD to ${EMAIL} and let's hop on a call.`;
-      }
+    // No delivery key configured: hand the message off to the visitor's email client —
+    // still a working path to my inbox, no fake "received" theater.
+    if (!WEB3FORMS_KEY) {
       setMessages((prev) => [
         ...prev,
-        { sender: 'raj', text: reply, time: 'Just now' },
+        { sender: 'user', text: userMessage, time: 'Just now', mailtoBody: userMessage },
       ]);
-    }, 1200);
+      queueReply(
+        `Live chat isn't wired up on this deployment — tap "Send via email" under your message and it'll open in your mail app, already addressed to me at ${EMAIL}.`,
+      );
+      return;
+    }
+
+    setMessages((prev) => [
+      ...prev,
+      { sender: 'user', text: userMessage, time: 'Just now', status: 'sending' },
+    ]);
+
+    try {
+      // FormData, not JSON: a JSON body triggers a CORS preflight that Web3Forms' Cloudflare
+      // rejects with 403 (verified) — a plain form POST is a "simple request" and goes through.
+      const form = new FormData();
+      form.append('access_key', WEB3FORMS_KEY);
+      form.append('subject', 'New message from Portfolio OS Contact.app');
+      form.append('from_name', 'Portfolio OS visitor');
+      form.append('message', userMessage);
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: form,
+      });
+      const data = await res.json();
+      if (!mounted.current) return;
+
+      if (data.success) {
+        updateLastUserMessage({ status: 'delivered' });
+        const jobIntent = /job|hire|role|opportunit/i.test(userMessage);
+        queueReply(
+          jobIntent
+            ? `Got it — your message just landed in my inbox. I'm always open to backend & AI opportunities; drop a JD or your contact and I'll get back to you quickly!`
+            : `Got it — your message just landed in my inbox. If you'd like a reply, include an email or LinkedIn handle, or reach me directly at ${EMAIL}.`,
+        );
+      } else {
+        throw new Error('delivery failed');
+      }
+    } catch {
+      if (!mounted.current) return;
+      updateLastUserMessage({ status: 'failed', mailtoBody: userMessage });
+      queueReply(
+        `Hmm, the message service didn't respond. Tap "Send via email" under your message instead — it opens your mail app with everything pre-filled.`,
+      );
+    }
   };
 
   return (
@@ -221,7 +298,7 @@ export default function ContactApp() {
                 {messages.map((m, idx) => (
                   <div
                     key={idx}
-                    className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}
                   >
                     <div
                       className={`max-w-[70%] p-3 rounded-2xl text-xs leading-relaxed ${
@@ -232,6 +309,21 @@ export default function ContactApp() {
                     >
                       <p>{withMailtoLinks(m.text)}</p>
                     </div>
+                    {/* iMessage-style delivery receipt / email hand-off under user bubbles */}
+                    {m.sender === 'user' && (m.status || m.mailtoBody) && (
+                      <span className="mt-1 mr-1 text-[10px]">
+                        {m.status === 'sending' && <span className="text-slate-500">Sending…</span>}
+                        {m.status === 'delivered' && <span className="text-slate-400 font-medium">Delivered</span>}
+                        {(m.status === 'failed' || (!m.status && m.mailtoBody)) && (
+                          <a
+                            href={`mailto:${EMAIL}?subject=${encodeURIComponent('Message from your Portfolio OS')}&body=${encodeURIComponent(m.mailtoBody ?? m.text)}`}
+                            className="text-[#0A84FF] font-semibold hover:underline"
+                          >
+                            Send via email ↗
+                          </a>
+                        )}
+                      </span>
+                    )}
                   </div>
                 ))}
                 <div ref={messagesEndRef} />

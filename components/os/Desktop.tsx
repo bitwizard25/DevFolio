@@ -10,6 +10,7 @@ import Dock from './Dock';
 import BootScreen from './BootScreen';
 import Terminal from './Terminal';
 import MobileOS from './MobileOS';
+import DesktopWidgets from './DesktopWidgets';
 
 interface WinState {
   open: boolean;
@@ -110,6 +111,8 @@ export default function Desktop() {
       {/* Subtle scrim so window chrome and the dock stay legible without washing out the photo */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none" />
 
+      {/* Ambient widgets — sit under windows, over the wallpaper */}
+      <DesktopWidgets />
 
       {/* Windows */}
       <AnimatePresence>
