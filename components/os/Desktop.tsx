@@ -76,10 +76,6 @@ export default function Desktop() {
   const finishBoot = () => {
     sessionStorage.setItem('os-booted', '1');
     setBooting(false);
-    // The guaranteed "peak" moment: land on a real, already-open window instead of an empty
-    // desktop — this only ever fires from the first-boot flow (finishBoot is unreachable
-    // otherwise), so repeat-session visitors keep whatever state they last left.
-    openApp('projects');
   };
 
   const visibleWindows = APPS.filter((a) => windows[a.id].open && !windows[a.id].minimized);
