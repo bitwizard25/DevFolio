@@ -198,6 +198,7 @@ const ContactMe = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
+                    data-mascot-react="shy"
                     className="w-full btn-primary flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (

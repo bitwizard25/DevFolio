@@ -17,6 +17,24 @@ const AboutSection = () => {
     { id: 'certifications', label: 'Achievements', icon: Award },
   ];
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const currentIndex = tabs.findIndex(tab => tab.id === activeTab);
+    let nextIndex = currentIndex;
+    
+    if (e.key === 'ArrowRight') {
+      nextIndex = (currentIndex + 1) % tabs.length;
+    } else if (e.key === 'ArrowLeft') {
+      nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    } else {
+      return;
+    }
+    
+    e.preventDefault();
+    setActiveTab(tabs[nextIndex].id);
+    const tabEl = document.getElementById(`tab-${tabs[nextIndex].id}`);
+    if (tabEl) tabEl.focus();
+  };
+
   const skills = [
     {
       category: 'Backend Development',
@@ -181,7 +199,19 @@ const AboutSection = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Profile Card */}
           <div className="lg:col-span-1 animate-slide-up">
-            <div className="card p-6 text-center sticky top-24">
+            <div className="card overflow-hidden text-center sticky top-24">
+              {/* macOS Title Bar */}
+              <div className="flex items-center gap-2 px-4 h-10 shrink-0 border-b border-white/10 bg-white/[0.03] select-none">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F57] opacity-80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E] opacity-80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#28C840] opacity-80" />
+                </div>
+                <span className="flex-1 text-center text-[11px] font-semibold text-white/40 tracking-wider uppercase font-mono pr-12">
+                  profile.md
+                </span>
+              </div>
+              <div className="p-6">
               {/* Profile Image */}
               <div className="relative w-32 h-32 mx-auto mb-4">
                 <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 blur opacity-50" />
@@ -242,17 +272,40 @@ const AboutSection = () => {
                   ))}
                 </div>
               </div>
+              </div>
             </div>
           </div>
 
           {/* Content Area */}
           <div className="lg:col-span-2 animate-slide-up animation-delay-200">
-            <div className="card overflow-hidden">
+            <div className="card overflow-hidden flex flex-col">
+              {/* macOS Title Bar */}
+              <div className="flex items-center gap-2 px-6 h-11 shrink-0 border-b border-white/10 bg-white/[0.03] select-none">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-3 h-3 rounded-full bg-[#FF5F57] opacity-80" />
+                  <span className="w-3 h-3 rounded-full bg-[#FEBC2E] opacity-80" />
+                  <span className="w-3 h-3 rounded-full bg-[#28C840] opacity-80" />
+                </div>
+                <span className="flex-1 text-center text-xs font-semibold text-white/40 tracking-wider uppercase font-mono pr-12">
+                  system_settings.sh
+                </span>
+              </div>
+              
+              <div className="p-6 pb-0">
               {/* Tabs - Interactive Pill Design */}
-              <div className="flex p-1 mb-8 bg-slate-900/50 backdrop-blur-md rounded-2xl border border-white/10 overflow-x-auto no-scrollbar">
+              <div 
+                role="tablist"
+                aria-label="About page sections"
+                onKeyDown={handleKeyDown}
+                className="flex p-1 mb-8 bg-slate-900/50 backdrop-blur-md rounded-2xl border border-white/10 overflow-x-auto remove-scrollbar"
+              >
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
+                    id={`tab-${tab.id}`}
+                    role="tab"
+                    aria-selected={activeTab === tab.id}
+                    aria-controls={`tabpanel-${tab.id}`}
                     onClick={() => setActiveTab(tab.id)}
                     className={`relative flex-1 min-w-[100px] flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors duration-300 ${activeTab === tab.id ? 'text-white' : 'text-slate-400 hover:text-slate-200'}`}
                   >
@@ -268,12 +321,16 @@ const AboutSection = () => {
                   </button>
                 ))}
               </div>
+            </div>
 
-              {/* Tab Content */}
-              <div className="p-6">
+            {/* Tab Content */}
+            <div className="p-6 pt-0">
                 {/* Skills Tab */}
                 {activeTab === 'skills' && (
                   <motion.div
+                    role="tabpanel"
+                    id="tabpanel-skills"
+                    aria-labelledby="tab-skills"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
@@ -329,6 +386,9 @@ const AboutSection = () => {
                 {/* Experience Tab */}
                 {activeTab === 'experience' && (
                   <motion.div
+                    role="tabpanel"
+                    id="tabpanel-experience"
+                    aria-labelledby="tab-experience"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -404,6 +464,9 @@ const AboutSection = () => {
                 {/* Architecture Tab */}
                 {activeTab === 'architecture' && (
                   <motion.div
+                    role="tabpanel"
+                    id="tabpanel-architecture"
+                    aria-labelledby="tab-architecture"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
@@ -416,6 +479,9 @@ const AboutSection = () => {
                 {/* Education Tab */}
                 {activeTab === 'education' && (
                   <motion.div
+                    role="tabpanel"
+                    id="tabpanel-education"
+                    aria-labelledby="tab-education"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -477,6 +543,9 @@ const AboutSection = () => {
                 {/* Certifications Tab */}
                 {activeTab === 'certifications' && (
                   <motion.div
+                    role="tabpanel"
+                    id="tabpanel-certifications"
+                    aria-labelledby="tab-certifications"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}

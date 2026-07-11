@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
+import Magnetic from '@/components/interactions/Magnetic';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +54,7 @@ const Navbar = () => {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg
+                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg link-underline
                   ${isActive(link.href)
                     ? 'text-white'
                     : 'text-white/60 hover:text-white'
@@ -68,14 +69,18 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA - One clear action */}
-          <Link
-            href="/contact"
-            className="hidden md:block px-5 py-2 text-sm font-medium text-white 
-                       bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300"
-          >
-            Contact
-          </Link>
+          {/* CTAs */}
+          <div className="hidden md:flex items-center gap-2">
+            <Magnetic strength={0.25} padding={8}>
+              <Link
+                href="/contact"
+                className="block px-5 py-2 text-sm font-medium text-white
+                           bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300"
+              >
+                Contact
+              </Link>
+            </Magnetic>
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -109,7 +114,7 @@ const Navbar = () => {
             <Link
               href="/contact"
               onClick={() => setIsOpen(false)}
-              className="block px-4 py-3 mt-2 text-center text-sm font-medium text-white 
+              className="block px-4 py-3 mt-2 text-center text-sm font-medium text-white
                          bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300"
             >
               Contact

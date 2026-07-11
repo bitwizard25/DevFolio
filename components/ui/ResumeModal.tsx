@@ -1,18 +1,21 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Download, FileText, ZoomIn, ZoomOut } from 'lucide-react';
-import { Document, Page, pdfjs } from 'react-pdf';
-import 'react-pdf/dist/Page/AnnotationLayer.css';
-import 'react-pdf/dist/Page/TextLayer.css';
-
-// Configure PDF worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+import { X, Download, FileText, ExternalLink } from 'lucide-react';
+import { useLenis } from '@/components/SmoothScrollProvider';
+import { resume } from '@/lib/site';
 
 const ResumeModal = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [numPages, setNumPages] = useState<number>(0);
-    const [scale, setScale] = useState(1.0);
+    const { lenis } = useLenis();
+
+    // Lock page scroll behind the overlay while open
+    useEffect(() => {
+        if (!lenis) return;
+        if (isOpen) lenis.stop();
+        else lenis.start();
+        return () => lenis.start();
+    }, [isOpen, lenis]);
 
     useEffect(() => {
         const handleOpen = () => setIsOpen(true);
@@ -28,10 +31,6 @@ const ResumeModal = () => {
         if (isOpen) window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isOpen]);
-
-    function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-        setNumPages(numPages);
-    }
 
     return (
         <AnimatePresence>
@@ -64,17 +63,18 @@ const ResumeModal = () => {
                                 </div>
                             </div>
 
-                            {/* Controls */}
-                            <div className="flex items-center gap-2 bg-black/50 rounded-lg p-1 border border-white/5 mx-auto">
-                                <button onClick={() => setScale(s => Math.max(0.5, s - 0.1))} className="p-1.5 hover:bg-white/10 rounded text-slate-400 hover:text-white"><ZoomOut className="w-4 h-4" /></button>
-                                <span className="text-xs text-slate-400 w-12 text-center">{Math.round(scale * 100)}%</span>
-                                <button onClick={() => setScale(s => Math.min(2, s + 0.1))} className="p-1.5 hover:bg-white/10 rounded text-slate-400 hover:text-white"><ZoomIn className="w-4 h-4" /></button>
-                            </div>
-
                             <div className="flex items-center gap-3">
                                 <a
-                                    href="/raj.pdf"
-                                    download="Raj_Bhoyar_Resume.pdf"
+                                    href={resume.previewUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hidden sm:flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors"
+                                >
+                                    <ExternalLink className="w-4 h-4" />
+                                    Open in Drive
+                                </a>
+                                <a
+                                    href={resume.downloadUrl}
                                     className="hidden sm:flex items-center gap-2 px-4 py-2 text-xs font-medium text-black bg-white rounded-lg hover:bg-slate-200 transition-colors"
                                 >
                                     <Download className="w-4 h-4" />
@@ -89,35 +89,14 @@ const ResumeModal = () => {
                             </div>
                         </div>
 
-                        {/* PDF Body - Scrollable */}
-                        <div className="flex-1 bg-slate-900/50 overflow-y-auto overflow-x-hidden p-6 sm:p-8 flex flex-col items-center gap-6">
-                            <Document
-                                file="/raj.pdf"
-                                onLoadSuccess={onDocumentLoadSuccess}
-                                className="flex flex-col gap-6"
-                                loading={
-                                    <div className="flex items-center justify-center h-64 text-slate-400">
-                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mr-3"></div>
-                                        Loading PDF...
-                                    </div>
-                                }
-                                error={
-                                    <div className="text-red-400 p-8 text-center bg-red-500/10 rounded-xl border border-red-500/20">
-                                        Failed to load PDF. Please download it directly.
-                                    </div>
-                                }
-                            >
-                                {Array.from(new Array(numPages), (el, index) => (
-                                    <Page
-                                        key={`page_${index + 1}`}
-                                        pageNumber={index + 1}
-                                        scale={scale}
-                                        renderTextLayer={false}
-                                        renderAnnotationLayer={false}
-                                        className="shadow-2xl border border-white/5"
-                                    />
-                                ))}
-                            </Document>
+                        {/* PDF Body — Google Drive's embeddable preview (has its own zoom/page controls) */}
+                        <div data-lenis-prevent className="flex-1 bg-slate-900/50">
+                            <iframe
+                                src={resume.previewUrl}
+                                title="Raj Bhoyar — Resume"
+                                className="w-full h-full border-0"
+                                allow="autoplay"
+                            />
                         </div>
                     </motion.div>
                 </div>

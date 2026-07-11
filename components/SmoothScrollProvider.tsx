@@ -1,67 +1,70 @@
 'use client'
-import { useEffect, useRef } from 'react';
-import LocomotiveScroll from 'locomotive-scroll';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { MotionValue, useMotionValue, useReducedMotion } from 'framer-motion';
+import Lenis from 'lenis';
 
-export default function LocomotiveScrollProvider({ children }: { children: React.ReactNode }) {
-    const containerRef = useRef<HTMLDivElement>(null);
+interface LenisContextValue {
+  lenis: Lenis | null;
+  /** Page scroll progress 0..1, driven by Lenis (stays 0 under reduced motion) */
+  scrollProgress: MotionValue<number>;
+}
 
-    useEffect(() => {
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) return;
+const LenisContext = createContext<LenisContextValue>({
+  lenis: null,
+  scrollProgress: null as unknown as MotionValue<number>,
+});
 
-        // Initialize Locomotive Scroll
-        const locomotiveScroll = new LocomotiveScroll({
-            el: containerRef.current!,
-            smooth: true,
-            multiplier: 1,
-            lerp: 0.1, // Linear interpolation - lower = smoother
-            smartphone: {
-                smooth: true,
-            },
-            tablet: {
-                smooth: true,
-            },
-        });
+export default function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
+  const reduced = useReducedMotion();
+  const scrollProgress = useMotionValue(0);
+  const [lenis, setLenis] = useState<Lenis | null>(null);
+  const pathname = usePathname();
 
-        // Sync Locomotive with GSAP ScrollTrigger
-        locomotiveScroll.on('scroll', ScrollTrigger.update);
+  useEffect(() => {
+    // Reduced motion: native scrolling only (html scroll-behavior handles anchors)
+    if (reduced) return;
 
-        // Tell ScrollTrigger to use these proxy methods
-        ScrollTrigger.scrollerProxy(containerRef.current, {
-            scrollTop(value) {
-                if (value !== undefined) {
-                    locomotiveScroll.scrollTo(value, { duration: 0, disableLerp: true });
-                }
-                return locomotiveScroll.scroll.instance.scroll.y;
-            },
-            getBoundingClientRect() {
-                return {
-                    top: 0,
-                    left: 0,
-                    width: window.innerWidth,
-                    height: window.innerHeight,
-                };
-            },
-            pinType: containerRef.current?.style.transform ? 'transform' : 'fixed',
-        });
+    const instance = new Lenis({
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      anchors: { offset: -80 }, // clear the fixed navbar on #hash clicks
+    });
 
-        // Refresh ScrollTrigger and Locomotive on updates
-        ScrollTrigger.addEventListener('refresh', () => locomotiveScroll.update());
-        ScrollTrigger.refresh();
+    instance.on('scroll', ({ progress }: { progress: number }) => {
+      scrollProgress.set(progress);
+    });
 
-        return () => {
-            locomotiveScroll.destroy();
-            ScrollTrigger.removeEventListener('refresh', () => locomotiveScroll.update());
-        };
-    }, []);
+    let raf = requestAnimationFrame(function loop(time) {
+      instance.raf(time);
+      raf = requestAnimationFrame(loop);
+    });
 
-    return (
-        <div ref={containerRef} data-scroll-container>
-            {children}
-        </div>
-    );
+    setLenis(instance);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      instance.destroy();
+      setLenis(null);
+    };
+  }, [reduced, scrollProgress]);
+
+  // anchors:true only intercepts real clicks — cover router.push('/#projects') style navigation
+  useEffect(() => {
+    if (!lenis) return;
+    const hash = window.location.hash;
+    if (hash) lenis.scrollTo(hash, { offset: -80 });
+  }, [pathname, lenis]);
+
+  return (
+    <LenisContext.Provider value={{ lenis, scrollProgress }}>
+      {children}
+    </LenisContext.Provider>
+  );
+}
+
+export function useLenis() {
+  return useContext(LenisContext);
 }

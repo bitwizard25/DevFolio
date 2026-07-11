@@ -1,34 +1,10 @@
-import HeroSection from "@/components/ui/Herosection";
-import AboutPreview from "@/components/ui/AboutPreview";
-import SkillsSection from "@/components/ui/SkillsSection";
-import ProjectsSection from "@/components/Project";
-import ExperienceTimeline from "@/components/ui/ExperienceTimeline";
-import StatsSection from "@/components/ui/StatsSection";
-import ContactCTA from "@/components/ui/ContactCTA";
+import Desktop from '@/components/os/Desktop';
 
 export default function Home() {
   return (
-    <main className="remove-scrollbar">
-      {/* Hero - The Opening Statement */}
-      <HeroSection />
-
-      {/* About Preview - Who I Am */}
-      <AboutPreview />
-
-      {/* Stats - Impact Numbers */}
-      <StatsSection />
-
-      {/* Skills - What I Do */}
-      <SkillsSection />
-
-      {/* Featured Projects - My Work */}
-      <ProjectsSection />
-
-      {/* Experience - My Journey */}
-      <ExperienceTimeline />
-
-      {/* Contact CTA - Let's Connect */}
-      <ContactCTA />
-    </main>
+    <div id="main-content">
+      <h1 className="sr-only">Raj Bhoyar — Full Stack Developer (Portfolio OS)</h1>
+      <Desktop />
+    </div>
   );
 }

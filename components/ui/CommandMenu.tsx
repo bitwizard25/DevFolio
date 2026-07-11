@@ -2,12 +2,16 @@
 import React, { useEffect, useState } from 'react';
 import { Command } from 'cmdk';
 import { useRouter } from 'next/navigation';
-import { Search, Home, Code2, Briefcase, Mail, FileText, Github, Laptop } from 'lucide-react';
+import { Search, Home, Code2, Briefcase, Mail, FileText, Github } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLenis } from '@/components/SmoothScrollProvider';
+
+import { caseStudies } from '@/lib/case-studies';
 
 const CommandMenu = () => {
     const [open, setOpen] = useState(false);
     const router = useRouter();
+    const { lenis } = useLenis();
 
     useEffect(() => {
         const down = (e: KeyboardEvent) => {
@@ -20,6 +24,14 @@ const CommandMenu = () => {
         document.addEventListener('keydown', down);
         return () => document.removeEventListener('keydown', down);
     }, []);
+
+    // Lock page scroll behind the overlay while open
+    useEffect(() => {
+        if (!lenis) return;
+        if (open) lenis.stop();
+        else lenis.start();
+        return () => lenis.start();
+    }, [open, lenis]);
 
     const runCommand = (command: () => void) => {
         setOpen(false);
@@ -52,7 +64,7 @@ const CommandMenu = () => {
                                     autoFocus
                                 />
                             </div>
-                            <Command.List className="max-h-[300px] overflow-y-auto overflow-x-hidden p-2">
+                            <Command.List data-lenis-prevent className="max-h-[300px] overflow-y-auto overflow-x-hidden p-2">
                                 <Command.Empty className="py-6 text-center text-sm text-slate-500">
                                     No results found.
                                 </Command.Empty>
@@ -66,7 +78,7 @@ const CommandMenu = () => {
                                         <span>Home</span>
                                     </Command.Item>
                                     <Command.Item
-                                        onSelect={() => runCommand(() => router.push('/#projects'))}
+                                        onSelect={() => runCommand(() => router.push('/projects'))}
                                         className="flex cursor-pointer select-none items-center rounded-lg px-2 py-2 text-sm text-slate-200 hover:bg-white/10 hover:text-white transition-colors aria-selected:bg-white/10 aria-selected:text-white"
                                     >
                                         <Code2 className="mr-2 h-4 w-4" />
@@ -90,9 +102,24 @@ const CommandMenu = () => {
 
                                 <Command.Separator className="my-1 h-px bg-white/10" />
 
+                                <Command.Group heading="Case Studies" className="text-xs font-medium text-slate-500 my-2 px-2">
+                                    {caseStudies.map((study) => (
+                                        <Command.Item
+                                            key={study.slug}
+                                            onSelect={() => runCommand(() => router.push(`/projects/${study.slug}`))}
+                                            className="flex cursor-pointer select-none items-center rounded-lg px-2 py-2 text-sm text-slate-200 hover:bg-white/10 hover:text-white transition-colors aria-selected:bg-white/10 aria-selected:text-white"
+                                        >
+                                            <FileText className="mr-2 h-4 w-4 text-cyan-400" />
+                                            <span>{study.title}</span>
+                                        </Command.Item>
+                                    ))}
+                                </Command.Group>
+
+                                <Command.Separator className="my-1 h-px bg-white/10" />
+
                                 <Command.Group heading="Social & Links" className="text-xs font-medium text-slate-500 my-2 px-2">
                                     <Command.Item
-                                        onSelect={() => runCommand(() => window.open('https://github.com/rajbhoyar729', '_blank'))}
+                                        onSelect={() => runCommand(() => window.open('https://github.com/bitwizard25', '_blank'))}
                                         className="flex cursor-pointer select-none items-center rounded-lg px-2 py-2 text-sm text-slate-200 hover:bg-white/10 hover:text-white transition-colors aria-selected:bg-white/10 aria-selected:text-white"
                                     >
                                         <Github className="mr-2 h-4 w-4" />
@@ -104,17 +131,6 @@ const CommandMenu = () => {
                                     >
                                         <FileText className="mr-2 h-4 w-4" />
                                         <span>View Resume</span>
-                                    </Command.Item>
-                                </Command.Group>
-
-                                <Command.Separator className="my-1 h-px bg-white/10" />
-
-                                <Command.Group heading="System" className="text-xs font-medium text-slate-500 my-2 px-2">
-                                    <Command.Item
-                                        className="flex cursor-pointer select-none items-center rounded-lg px-2 py-2 text-sm text-slate-400 cursor-not-allowed opacity-50"
-                                    >
-                                        <Laptop className="mr-2 h-4 w-4" />
-                                        <span>Toggle Theme (Dark Mode Active)</span>
                                     </Command.Item>
                                 </Command.Group>
                             </Command.List>

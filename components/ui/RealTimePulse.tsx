@@ -38,6 +38,8 @@ const RealTimePulse = () => {
         >
             <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-slate-900/80 backdrop-blur-md border border-white/10 shadow-lg">
 
+                {/* Fixed width so the pill doesn't resize as statuses of different lengths cycle */}
+                <div className="w-[172px] h-8 flex items-center overflow-hidden">
                 <AnimatePresence mode="wait">
                     {status === 'coding' && (
                         <motion.div
@@ -90,9 +92,10 @@ const RealTimePulse = () => {
                         </motion.div>
                     )}
                 </AnimatePresence>
+                </div>
 
                 <div className="h-6 w-px bg-white/10 mx-1" />
-                <span className="text-xs text-slate-500 font-mono">{time}</span>
+                <span className="text-xs text-slate-500 font-mono w-[64px] text-right">{time}</span>
             </div>
         </motion.div>
     );

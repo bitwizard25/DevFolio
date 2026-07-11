@@ -1,7 +1,21 @@
 'use client'
 
+import dynamic from 'next/dynamic';
+import { MotionConfig } from 'framer-motion';
+import { MouseProvider } from '@/components/providers/MouseProvider';
+import SmoothScrollProvider from '@/components/SmoothScrollProvider';
+
+const NinjaMascot = dynamic(() => import('@/components/mascot/NinjaMascot'), { ssr: false });
+
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
-    // Removed Locomotive Scroll - was causing SSR issues and slow loading
-    // Site works fine with CSS smooth scrolling
-    return <>{children}</>;
+    return (
+        <MotionConfig reducedMotion="user">
+            <MouseProvider>
+                <SmoothScrollProvider>
+                    {children}
+                    <NinjaMascot />
+                </SmoothScrollProvider>
+            </MouseProvider>
+        </MotionConfig>
+    );
 }
