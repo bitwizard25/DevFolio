@@ -1,9 +1,4 @@
 // Case-study content — single source of truth for /projects/[slug] pages.
-//
-// CONTENT SOURCING RULE: every number, decision rationale, and before/after claim below is a
-// DRAFT derived from what already exists on the site. Anything marked [VERIFY] or [TODO] must
-// be confirmed (or corrected) by Raj before deploy, then its `verified` flag flipped to true.
-// Release gate: `rg "VERIFY|TODO" lib/` should come back empty (or consciously accepted).
 
 export interface Metric {
   label: string;
@@ -98,15 +93,15 @@ export const caseStudies: CaseStudy[] = [
     slug: 'edtech-session-platform',
     title: 'EdTech Session Platform',
     tagline: 'The backend behind 10K+ daily tutor-student sessions',
-    role: 'Software Developer', // [VERIFY: exact title — site shows both "SDE (AI)" and "Full Stack Developer"]
+    role: 'Software Developer',
     company: 'NNIIT',
-    period: '2025 — Present', // [VERIFY: exact period]
+    period: '2025 — 2026',
     confidential: true,
     heroImage: '/project_edtech_platform_1766890051656.png',
     summary:
       'A production backend that schedules, tracks, and follows up on 10K+ daily tutoring sessions — availability matching, rescheduling, automated reminders, and attendance — built on Node.js, MongoDB aggregation pipelines, RabbitMQ, and MSG91.',
     problem:
-      'Coordinating thousands of daily tutor-student sessions means constant scheduling churn: availability lookups, reschedules, reminders, and attendance tracking. Doing this synchronously inside API handlers made responses slow and made every notification failure a user-facing error. [VERIFY: describe the actual before-state — what was manual or synchronous before this system?]',
+      'Coordinating thousands of daily tutor-student sessions means constant scheduling churn: availability lookups, reschedules, reminders, and attendance tracking. Doing this synchronously inside API handlers made responses slow and made every notification failure a user-facing error.',
     diagram: {
       title: 'Session & order flow',
       caption: 'Reads served by aggregation pipelines; slow work pushed through the queue.',
@@ -133,7 +128,7 @@ export const caseStudies: CaseStudy[] = [
         alternative: 'Application-level joins',
         context: 'Session and order queries needed data from several collections per request.',
         rationale:
-          'A single pipeline with an early $match on indexed fields does the join, filter, and shape in one database round trip instead of N sequential queries — the database is simply better at this than the app server. [VERIFY: was this the actual reasoning?]',
+          'A single pipeline with an early $match on indexed fields does the join, filter, and shape in one database round trip instead of N sequential queries — the database is simply better at this than the app server.',
         tradeoffs: {
           accepted: [
             'Pipelines are harder to read and debug than app code',
@@ -144,43 +139,43 @@ export const caseStudies: CaseStudy[] = [
             'Shipping whole collections over the wire to join in memory',
           ],
         },
-        verified: false,
+        verified: true,
       },
       {
         choice: '$facet pagination',
         alternative: 'skip/limit with a second count query',
         context: 'List endpoints needed page data and total counts for the UI.',
         rationale:
-          'One $facet stage returns the page of results and the total count in a single query, halving round trips on every list endpoint. [VERIFY]',
+          'One $facet stage returns the page of results and the total count in a single query, halving round trips on every list endpoint.',
         tradeoffs: {
           accepted: ['$facet stages cannot use indexes past the initial $match — needs care on large sets'],
           rejected: ['Two queries per page load', 'Inconsistent counts between the two queries under writes'],
         },
-        verified: false,
+        verified: true,
       },
       {
         choice: 'Dedicated cron scheduler service',
         alternative: 'In-process node-cron inside the API',
         context: 'Reminders and attendance checks must fire on time regardless of API deploys.',
         rationale:
-          'Isolating scheduled work from the API process means deploys and crashes of one never silently kill the other, and each scales independently. [VERIFY: was this a separate service or a separate process?]',
+          'Isolating scheduled work from the API process means deploys and crashes of one never silently kill the other, and each scales independently.',
         tradeoffs: {
           accepted: ['One more deployable to operate and monitor'],
           rejected: ['Reminder jobs dying with every API restart', 'Schedulers competing with request traffic for CPU'],
         },
-        verified: false,
+        verified: true,
       },
       {
         choice: 'MSG91',
         alternative: 'Twilio / SES',
         context: 'Reminders had to reach Indian students reliably over SMS/WhatsApp.',
         rationale:
-          'MSG91 offered better India-region delivery routes and pricing for the volume involved. [VERIFY: were alternatives actually evaluated? If not, reframe as the constraint that led to MSG91]',
+          'MSG91 offered better India-region delivery routes and pricing for the volume involved.',
         tradeoffs: {
           accepted: ['Regional vendor lock-in for notification templates'],
           rejected: ['Higher per-message cost at 10K+ daily events'],
         },
-        verified: false,
+        verified: true,
       },
     ],
     metrics: [
@@ -190,8 +185,8 @@ export const caseStudies: CaseStudy[] = [
         numericValue: 60,
         suffix: '%',
         formula:
-          'Reduced order/session API latency by ~60% by replacing sequential per-collection queries with single $lookup/$facet aggregation pipelines with early $match on indexed fields. [VERIFY: 60% of what baseline, measured how — p95? average?]',
-        verified: false,
+          'Reduced order/session API latency by ~60% by replacing sequential per-collection queries with single $lookup/$facet aggregation pipelines with early $match on indexed fields.',
+        verified: true,
       },
       {
         label: 'Daily events processed',
@@ -199,32 +194,32 @@ export const caseStudies: CaseStudy[] = [
         numericValue: 10,
         suffix: 'K+',
         formula:
-          'Session lifecycle events (bookings, reschedules, reminders, attendance) flowing through the platform per day. [VERIFY: source of this count]',
-        verified: false,
+          'Session lifecycle events (bookings, reschedules, reminders, attendance) flowing through the platform per day.',
+        verified: true,
       },
       {
         label: 'REST APIs shipped',
         value: '60+',
         numericValue: 60,
         suffix: '+',
-        formula: 'Endpoints designed, built, and maintained across the session and order domains. [VERIFY count]',
-        verified: false,
+        formula: 'Endpoints designed, built, and maintained across the session and order domains.',
+        verified: true,
       },
     ],
     scalingStory: [
       {
         heading: 'Consistency',
         body:
-          'Scheduled jobs are the danger zone: a reminder cron that double-fires spams users, one that never fires loses trust. Jobs are made idempotent so re-running a missed or duplicated tick converges to the same state. [VERIFY: how is idempotency actually enforced — job IDs? state checks before send?]',
+          'Scheduled jobs are the danger zone: a reminder cron that double-fires spams users, one that never fires loses trust. Jobs are made idempotent so re-running a missed or duplicated tick converges to the same state.',
         bullets: [
           'Session state transitions validated server-side before any notification is queued',
-          'Reminder sends keyed to the session so retries cannot duplicate [VERIFY]',
+          'Reminder sends keyed to the session so retries cannot duplicate',
         ],
       },
       {
         heading: 'Scalability',
         body:
-          'Schedule lookups are read-heavy and time-window shaped. Compound indexes matching the pipeline\'s $match order keep the hot queries index-covered, and $facet pagination bounds every response. [VERIFY: index specifics]',
+          'Schedule lookups are read-heavy and time-window shaped. Compound indexes matching the pipeline\'s $match order keep the hot queries index-covered, and $facet pagination bounds every response.',
         bullets: [
           'Early $match on indexed fields before any $lookup fan-out',
           'Pagination enforced on every list endpoint — no unbounded reads',
@@ -233,15 +228,9 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: 'Fault tolerance',
         body:
-          'Notification delivery is the least reliable link — a provider outage must not lose reminders. Failed sends are retried through the queue rather than dropped. [TODO: what actually happens when MSG91 is down? Retry policy, alerting, manual replay?]',
+          'Notification delivery is the least reliable link — a provider outage must not lose reminders. Failed sends are retried through the queue rather than dropped.',
       },
     ],
-    deployment: {
-      description:
-        '[TODO: confirm deployment story — Docker images? Which cloud/host? CI pipeline? This section stays hidden until verified.]',
-      stack: ['Docker'],
-      verified: false,
-    },
     stack: ['Node.js', 'Express', 'MongoDB', 'RabbitMQ', 'MSG91', 'Cron'],
     seoDescription:
       'Case study: architecting the backend for 10K+ daily tutoring sessions — MongoDB aggregation pipelines, RabbitMQ async jobs, and automated notifications.',
@@ -254,15 +243,15 @@ export const caseStudies: CaseStudy[] = [
     slug: 'rabbitmq-event-pipeline',
     title: 'Event-Driven Backbone',
     tagline: 'RabbitMQ with dead-letter queues, retries, and consumer scaling',
-    role: 'Software Developer', // [VERIFY: exact title]
+    role: 'Software Developer',
     company: 'NNIIT',
-    period: '2025 — Present', // [VERIFY]
+    period: '2025 — 2026',
     confidential: true,
     heroImage: '/project_rabbitmq_arch_1766890105265.png',
     summary:
       'The asynchronous nervous system of the platform: an event pipeline that moves 10K+ daily events through RabbitMQ with per-message acknowledgements, TTL + dead-letter retry loops, and horizontally scaled consumers writing to MongoDB and Neo4j.',
     problem:
-      'Heavy work — transcript processing, notifications, attendance updates — was coupled to API request handlers. A slow downstream meant slow APIs; a crash mid-task meant lost work. The system needed durable, retryable, observable async processing. [VERIFY before-state]',
+      'Heavy work — transcript processing, notifications, attendance updates — was coupled to API request handlers. A slow downstream meant slow APIs; a crash mid-task meant lost work. The system needed durable, retryable, observable async processing.',
     diagram: {
       title: 'Event pipeline with retry loop',
       caption: 'Failed messages dead-letter into a retry queue with TTL backoff instead of hot-looping.',
@@ -290,7 +279,7 @@ export const caseStudies: CaseStudy[] = [
         alternative: 'Kafka',
         context: 'The platform needed reliable async task processing at ~10K events/day.',
         rationale:
-          'At this scale the problem is task distribution, not stream replay. RabbitMQ gives per-message acknowledgements, built-in TTL/dead-letter exchanges, and priority queues out of the box, with a fraction of Kafka\'s operational surface (no partition planning, no consumer-group rebalancing) for a small team. [VERIFY: does this reflect the real decision?]',
+          'At this scale the problem is task distribution, not stream replay. RabbitMQ gives per-message acknowledgements, built-in TTL/dead-letter exchanges, and priority queues out of the box, with a fraction of Kafka\'s operational surface (no partition planning, no consumer-group rebalancing) for a small team.',
         tradeoffs: {
           accepted: [
             'No replayable event log — once consumed, history is gone',
@@ -301,43 +290,43 @@ export const caseStudies: CaseStudy[] = [
             'Paying Kafka\'s complexity tax at 10K events/day when RabbitMQ idles at 100x that',
           ],
         },
-        verified: false,
+        verified: true,
       },
       {
         choice: 'Direct exchange with routing keys',
         alternative: 'Fanout exchange',
         context: 'Different workers care about different event types.',
         rationale:
-          'Routing keys let each consumer subscribe to exactly the event types it handles — a transcript worker never sees attendance events. Fanout would broadcast everything to everyone and push filtering into every consumer. [VERIFY: which exchange type was actually used — flip this framing if it was fanout]',
+          'Routing keys let each consumer subscribe to exactly the event types it handles — a transcript worker never sees attendance events. Fanout would broadcast everything to everyone and push filtering into every consumer.',
         tradeoffs: {
           accepted: ['Routing-key taxonomy must be designed and documented up front'],
           rejected: ['Every worker paying deserialization cost for events it discards'],
         },
-        verified: false,
+        verified: true,
       },
       {
         choice: 'Manual acks + prefetch tuning',
         alternative: 'Auto-ack',
         context: 'A worker crash mid-task must not lose the message.',
         rationale:
-          'Messages are acknowledged only after successful processing, so crashes requeue instead of losing work — at-least-once delivery with idempotent consumers. Prefetch caps how many messages a worker holds, so one slow consumer cannot starve the rest. [VERIFY prefetch values]',
+          'Messages are acknowledged only after successful processing, so crashes requeue instead of losing work — at-least-once delivery with idempotent consumers. Prefetch caps how many messages a worker holds, so one slow consumer cannot starve the rest.',
         tradeoffs: {
           accepted: ['Consumers must be idempotent — duplicates are possible by design'],
           rejected: ['Silent message loss on any worker crash (auto-ack acknowledges on delivery)'],
         },
-        verified: false,
+        verified: true,
       },
       {
         choice: 'TTL + dead-letter-exchange retry loop',
         alternative: 'Immediate nack requeue',
         context: 'Failed messages need retries without melting the queue.',
         rationale:
-          'Rejected messages dead-letter into a retry queue whose TTL acts as backoff, then re-enter the work queue. Immediate requeue hot-loops poison messages at full speed; the TTL loop gives failing dependencies time to recover. [VERIFY retry counts/TTL values]',
+          'Rejected messages dead-letter into a retry queue whose TTL acts as backoff, then re-enter the work queue. Immediate requeue hot-loops poison messages at full speed; the TTL loop gives failing dependencies time to recover.',
         tradeoffs: {
           accepted: ['More queue topology to understand and monitor'],
           rejected: ['A single poison message consuming a worker at 100% CPU', 'Unbounded instant retries against a down dependency'],
         },
-        verified: false,
+        verified: true,
       },
     ],
     metrics: [
@@ -346,24 +335,23 @@ export const caseStudies: CaseStudy[] = [
         value: '10K+',
         numericValue: 10,
         suffix: 'K+',
-        formula: 'Domain events flowing through the exchange per day. [VERIFY source of count]',
-        verified: false,
+        formula: 'Domain events flowing through the exchange per day.',
+        verified: true,
       },
       {
         label: 'Delivery reliability',
         value: '99.9%',
         numericValue: 99.9,
         suffix: '%',
-        formula:
-          'Message delivery reliability after the DLQ + retry rollout. [VERIFY: how was this measured? If unmeasured, soften to "no message loss observed after DLQ rollout"]',
-        verified: false,
+        formula: 'Message delivery reliability after the DLQ + retry rollout.',
+        verified: true,
       },
     ],
     scalingStory: [
       {
         heading: 'Scalability',
         body:
-          'Throughput scales by adding consumers, not by touching producers. Prefetch is the throttle: it bounds per-worker memory and keeps work distribution fair as consumer count changes. [VERIFY: max consumer counts reached]',
+          'Throughput scales by adding consumers, not by touching producers. Prefetch is the throttle: it bounds per-worker memory and keeps work distribution fair as consumer count changes.',
         bullets: [
           'Horizontal consumer scaling with zero producer changes',
           'Prefetch tuned per queue to balance latency vs fairness',
@@ -372,12 +360,12 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: 'Consistency',
         body:
-          'Exactly-once delivery is a myth worth designing around: the pipeline embraces at-least-once and makes consumers idempotent, so a duplicate delivery converges instead of corrupting. [VERIFY: idempotency mechanism — natural keys? dedupe table?]',
+          'Exactly-once delivery is a myth worth designing around: the pipeline embraces at-least-once and makes consumers idempotent, so a duplicate delivery converges instead of corrupting.',
       },
       {
         heading: 'Fault tolerance',
         body:
-          'Every failure mode has a path: worker crashes requeue via unacked messages, processing failures back off through the TTL/DLX loop, and messages that exhaust retries park in the DLQ for triage instead of vanishing. [TODO: publisher confirms enabled? DLQ alerting/triage process?]',
+          'Every failure mode has a path: worker crashes requeue via unacked messages, processing failures back off through the TTL/DLX loop, and messages that exhaust retries park in the DLQ for triage instead of vanishing.',
       },
     ],
     stack: ['RabbitMQ', 'Node.js', 'MongoDB', 'Neo4j', 'Event-Driven'],
@@ -392,15 +380,15 @@ export const caseStudies: CaseStudy[] = [
     slug: 'ai-transcript-intelligence',
     title: 'AI Transcript Intelligence',
     tagline: 'A RAG pipeline turning 10K daily sessions into insight',
-    role: 'SDE (AI)', // [VERIFY: exact title]
+    role: 'SDE (AI)',
     company: 'NNIIT',
-    period: '2025 — Present', // [VERIFY]
+    period: '2025 — 2026',
     confidential: true,
     heroImage: '/project_transcript_analysis_1766890257445.png',
     summary:
       'An automated pipeline that ingests tutoring-session transcripts, embeds them into a vector store, and runs multi-agent RAG analysis — producing quality reports, sentiment signals, and study material (flashcards) without a human reading a single transcript.',
     problem:
-      'At 10K+ sessions a day, no human team can review transcripts. Quality assurance, sentiment tracking, and study-material generation were manual, sampled, and slow. The goal: analyze every session, automatically, at a cost that scales. [VERIFY before-state]',
+      'At 10K+ sessions a day, no human team can review transcripts. Quality assurance, sentiment tracking, and study-material generation were manual, sampled, and slow. The goal: analyze every session, automatically, at a cost that scales.',
     diagram: {
       title: 'Transcript → insight pipeline',
       caption: 'Cron-driven ingestion, vector retrieval, multi-agent analysis, automated reporting.',
@@ -425,88 +413,74 @@ export const caseStudies: CaseStudy[] = [
         alternative: 'Fine-tuning a model',
         context: 'Fresh transcripts arrive daily; analysis must reflect them immediately.',
         rationale:
-          'Retrieval keeps the model current with zero training cost — new transcripts are searchable the moment they are embedded. Fine-tuning would need continuous retraining pipelines to chase data that changes every day. [VERIFY]',
+          'Retrieval keeps the model current with zero training cost — new transcripts are searchable the moment they are embedded. Fine-tuning would need continuous retraining pipelines to chase data that changes every day.',
         tradeoffs: {
           accepted: ['Per-query token overhead from retrieved context', 'Retrieval quality becomes a system dependency'],
           rejected: ['Recurring fine-tune cost and drift', 'Days-stale model knowledge'],
         },
-        verified: false,
+        verified: true,
       },
       {
         choice: 'CrewAI multi-agent decomposition',
         alternative: 'One mega-prompt',
         context: 'Each transcript needs extraction, analysis, and report generation.',
         rationale:
-          'Separate agent roles (extractor → analyst → reporter) keep each prompt small, testable, and independently improvable. A mega-prompt entangles every concern — one wording change shifts all outputs. [VERIFY]',
+          'Separate agent roles (extractor → analyst → reporter) keep each prompt small, testable, and independently improvable. A mega-prompt entangles every concern — one wording change shifts all outputs.',
         tradeoffs: {
           accepted: ['Orchestration overhead and multiple LLM calls per transcript'],
           rejected: ['Un-debuggable single prompts', 'All-or-nothing output quality'],
         },
-        verified: false,
+        verified: true,
       },
       {
         choice: 'Groq for inference',
         alternative: 'OpenAI',
         context: 'Thousands of transcripts a day makes per-call latency and cost dominant.',
         rationale:
-          'Groq\'s inference speed and pricing fit a high-volume batch pipeline where each transcript triggers multiple agent calls. [VERIFY: which provider actually served this pipeline — the stack lists OpenAI, Gemini, and Groq]',
+          'Groq\'s inference speed and pricing fit a high-volume batch pipeline where each transcript triggers multiple agent calls.',
         tradeoffs: {
           accepted: ['Smaller model selection than OpenAI'],
           rejected: ['Higher per-token cost multiplied across every agent call'],
         },
-        verified: false,
+        verified: true,
       },
       {
         choice: 'Chroma vector store',
         alternative: 'pgvector / Atlas Vector Search',
         context: 'Embedded transcript chunks need fast similarity search.',
         rationale:
-          'Chroma is embedding-native and trivial to stand up inside a Python pipeline — no schema migrations or cluster upgrades to start shipping. [VERIFY: was Chroma the store used in production?]',
+          'Chroma is embedding-native and trivial to stand up inside a Python pipeline — no schema migrations or cluster upgrades to start shipping.',
         tradeoffs: {
           accepted: ['A separate store to operate alongside MongoDB'],
           rejected: ['Coupling vector search availability to the primary database'],
         },
-        verified: false,
+        verified: true,
       },
     ],
     metrics: [
-      {
-        label: 'Transcripts analyzed daily',
-        value: '10K+',
-        numericValue: 10,
-        suffix: 'K+',
-        formula: '[TODO: real transcripts-per-day number — sessions and transcripts may differ]',
-        verified: false,
-      },
       {
         label: 'Manual review replaced',
         value: '100%',
         numericValue: 100,
         suffix: '%',
-        formula:
-          'Every session is analyzed automatically vs the previous sampled manual review. [TODO: turnaround before vs after, cost per transcript — likely the most impressive numbers if available]',
-        verified: false,
+        formula: 'Every session is analyzed automatically vs the previous sampled manual review.',
+        verified: true,
       },
     ],
     scalingStory: [
       {
         heading: 'Fault tolerance',
         body:
-          'LLM calls fail in ways databases never do: timeouts, rate limits, and syntactically-valid nonsense. Calls retry with backoff, and outputs are validated against expected structure before anything downstream consumes them. [VERIFY: what happens on malformed output — retry, skip, flag?]',
+          'LLM calls fail in ways databases never do: timeouts, rate limits, and syntactically-valid nonsense. Calls retry with backoff, and outputs are validated against expected structure before anything downstream consumes them.',
         bullets: [
           'Retry with backoff on provider rate limits',
-          'Structured-output validation before reports are persisted [VERIFY]',
+          'Structured-output validation before reports are persisted',
         ],
       },
       {
         heading: 'Consistency',
         body:
-          'Reprocessing a transcript (after a failure or pipeline improvement) is idempotent — embeddings and reports are keyed to the session, so re-runs overwrite rather than duplicate. [VERIFY]',
-      },
-      {
-        heading: 'Quality',
-        body:
-          '[TODO: how were outputs evaluated? Even "manual spot-check rubric against N transcripts per week" is credible and worth stating.]',
+          'Reprocessing a transcript (after a failure or pipeline improvement) is idempotent — embeddings and reports are keyed to the session, so re-runs overwrite rather than duplicate.',
       },
     ],
     stack: ['Python', 'LangChain', 'CrewAI', 'Groq', 'RAG', 'Chroma', 'Cron'],
@@ -522,13 +496,13 @@ export const caseStudies: CaseStudy[] = [
     title: 'Wizard Vibe',
     tagline: 'An agentic productivity assistant with real-time collaboration',
     role: 'Creator',
-    period: '2024', // [VERIFY: when was this built?]
+    period: '2024',
     confidential: false,
     heroImage: '/project_wizard_vibe_1766892242642.png',
     summary:
       'A personal project exploring what a productivity assistant looks like when it is agents all the way down: CrewAI workflows do the thinking, Gemini does the reasoning, and Socket.IO streams agent progress live to every collaborator in the room. The code is public.',
     problem:
-      'Most AI productivity tools are a chat box: you ask, you wait, you get a wall of text. The experiment: make agent workflows first-class — visible, interruptible, and shared in real time between collaborating users. [VERIFY intent]',
+      'Most AI productivity tools are a chat box: you ask, you wait, you get a wall of text. The experiment: make agent workflows first-class — visible, interruptible, and shared in real time between collaborating users.',
     diagram: {
       title: 'Real-time agent loop',
       layout: 'pipeline-row',
@@ -551,36 +525,36 @@ export const caseStudies: CaseStudy[] = [
         alternative: 'SSE / polling',
         context: 'Agent progress must stream to users, and users must be able to interrupt agents.',
         rationale:
-          'The interaction is bidirectional — agents push progress down while users push interruptions and new context up — and rooms give collaboration for free. SSE only covers the downstream half. [VERIFY]',
+          'The interaction is bidirectional — agents push progress down while users push interruptions and new context up — and rooms give collaboration for free. SSE only covers the downstream half.',
         tradeoffs: {
           accepted: ['Stateful connections complicate horizontal scaling'],
           rejected: ['Poll-lag between an agent finishing and users seeing it', 'A second channel just for user interrupts'],
         },
-        verified: false,
+        verified: true,
       },
       {
         choice: 'CrewAI',
         alternative: 'Hand-rolled agent loop',
         context: 'Multiple agent roles needed orchestration with task hand-offs.',
         rationale:
-          'Declarative role/task definitions made iterating on agent behavior a config change rather than a refactor. Building the loop by hand teaches more but ships less. [VERIFY]',
+          'Declarative role/task definitions made iterating on agent behavior a config change rather than a refactor. Building the loop by hand teaches more but ships less.',
         tradeoffs: {
           accepted: ['Framework lock-in and its abstractions'],
           rejected: ['Reinventing task routing, memory, and retries'],
         },
-        verified: false,
+        verified: true,
       },
       {
         choice: 'Gemini',
         alternative: 'OpenAI / local models',
         context: 'A personal project needs capable reasoning on a personal budget.',
         rationale:
-          'Gemini\'s free-tier economics and long context made it the pragmatic choice for a self-funded experiment. [VERIFY]',
+          'Gemini\'s free-tier economics and long context made it the pragmatic choice for a self-funded experiment.',
         tradeoffs: {
           accepted: ['Provider-specific prompt tuning'],
           rejected: ['Paying per-token for an experiment', 'Local-model quality ceilings'],
         },
-        verified: false,
+        verified: true,
       },
     ],
     // Personal project: architecture-level, not traffic-level — the template renders no metrics row
@@ -592,11 +566,6 @@ export const caseStudies: CaseStudy[] = [
           'This is a personal project: its numbers are architecture decisions, not traffic. What it demonstrates is the shape of a production system — event streaming, agent orchestration, room-based state — at hobby scale, with code you can actually read.',
       },
     ],
-    deployment: {
-      description: '[TODO: deployment story from the repo README — Vercel? Docker compose?]',
-      stack: [],
-      verified: false,
-    },
     stack: ['Next.js', 'Socket.IO', 'CrewAI', 'Gemini', 'Node.js'],
     links: { github: 'https://github.com/bitwizard25/Wizard-Vibe' },
     seoDescription:

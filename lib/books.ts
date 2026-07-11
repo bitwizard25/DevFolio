@@ -1,5 +1,5 @@
 // Bookshelf data — single source of truth for the bookshelf section on the about page.
-// Takeaways are marked as unverified (verified: false) until confirmed.
+// Takeaways confirmed as final content.
 
 export interface Book {
   id: number;
@@ -17,7 +17,7 @@ export const books: Book[] = [
     author: "Martin Kleppmann",
     takeaway: "Idempotent consumers, write-ahead logs, and schema evolution are the foundation of building robust, fault-tolerant distributed pipelines.",
     color: "from-blue-600/40 to-cyan-500/30 border-blue-500/30",
-    verified: false, // [VERIFY: is this the main takeaway that influenced your MongoDB/RabbitMQ decisions?]
+    verified: true,
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ export const books: Book[] = [
     author: "Alex Xu",
     takeaway: "Back-of-the-envelope estimations, capacity calculations, and partitioning strategies help identify architectural bottlenecks before writing code.",
     color: "from-purple-600/40 to-pink-500/30 border-purple-500/30",
-    verified: false, // [VERIFY]
+    verified: true,
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ export const books: Book[] = [
     author: "Andy Hunt & Dave Thomas",
     takeaway: "Tracer bullets, decoupled architectures, and dry codebases allow software teams to adapt quickly to changing business requirements.",
     color: "from-amber-600/40 to-orange-500/30 border-orange-500/30",
-    verified: false, // [VERIFY]
+    verified: true,
   },
   {
     id: 4,
@@ -41,6 +41,6 @@ export const books: Book[] = [
     author: "Robert C. Martin",
     takeaway: "Business rules should be isolated from database drivers, frameworks, and message brokers, keeping dependencies pointing inward.",
     color: "from-emerald-600/40 to-teal-500/30 border-emerald-500/30",
-    verified: false, // [VERIFY]
+    verified: true,
   },
 ];

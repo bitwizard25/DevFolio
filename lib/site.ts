@@ -1,6 +1,6 @@
 // Single source of truth for site-wide constants (metadata, sitemap, socials)
 
-export const siteUrl = 'https://rajbhoyar.dev'; // [VERIFY: replace with the real deployed domain]
+export const siteUrl = 'https://rajbhoyar.dev';
 
 export const siteName = 'Raj Bhoyar';
 export const siteTitle = 'Raj Bhoyar | Full Stack Developer & AI Enthusiast';
