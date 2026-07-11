@@ -34,10 +34,10 @@ export default function AboutApp() {
       {/* Main Tab Content */}
       <div className="flex-1 p-6 overflow-y-auto">
         {activeTab === 'overview' && (
-          <div className="grid md:grid-cols-[160px,1fr] gap-8 items-center h-full">
-            {/* System Icon */}
-            <div className="flex flex-col items-center justify-center text-center space-y-3">
-              <div className="relative w-28 h-28 rounded-3xl overflow-hidden border border-white/20 shadow-xl shadow-black/40">
+          <div className="grid md:grid-cols-[200px,1fr] gap-8 items-center h-full max-w-3xl mx-auto">
+            {/* Identity — the "chip" of this machine */}
+            <div className="flex flex-col items-center justify-center text-center space-y-4">
+              <div className="relative w-28 h-28 rounded-[28%] overflow-hidden border border-white/15 ring-1 ring-white/[0.08] shadow-xl shadow-black/50">
                 <Image
                   src="/Raj.jpg"
                   alt="Raj Bhoyar Avatar"
@@ -46,54 +46,59 @@ export default function AboutApp() {
                 />
               </div>
               <div>
-                <h3 className="font-bold text-sm">Raj Bhoyar</h3>
-                <p className="text-[10px] text-slate-400">Founding Engineer @ Hapminds</p>
+                <h3 className="font-bold text-base text-white tracking-tight">Raj Bhoyar</h3>
+                <p className="text-[11px] text-[#0A84FF] font-medium mt-0.5">Founding Engineer @ Hapminds</p>
               </div>
             </div>
 
-            {/* Spec Table */}
-            <div className="space-y-4">
+            {/* About This Mac-style panel */}
+            <div className="space-y-5">
               <div>
-                <h2 className="text-xl font-bold tracking-tight">RajOS Sequoia</h2>
-                <p className="text-xs text-slate-400 font-mono mt-0.5">Version 15.5.20 (Build 26A324)</p>
+                <h2 className="text-2xl font-bold tracking-tight">
+                  Bitwizard <span className="font-light text-slate-300">OS</span>
+                </h2>
+                <p className="text-xs text-slate-400 font-mono mt-1">Version 2.0 &ldquo;Hapminds&rdquo; · Build 2026.07</p>
               </div>
 
-              <div className="h-px bg-white/10" />
-
-              {/* Real stack facts, enclosed together — distinct from the flavor chip below */}
-              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3">
-                <div className="grid grid-cols-[100px,1fr] gap-x-4 gap-y-2.5 text-xs font-light">
-                  <span className="text-slate-400 font-medium">Core Stack:</span>
-                  <span className="text-white">Node.js, Express, Python (FastAPI/Django)</span>
-
-                  <span className="text-slate-400 font-medium">System Core:</span>
-                  <span className="text-white">React, Next.js, Framer Motion, Tailwind v3</span>
-
-                  <span className="text-slate-400 font-medium">Memory (Cache):</span>
-                  <span className="text-white">Redis Cache, MongoDB Aggregations</span>
-
-                  <span className="text-slate-400 font-medium">Graphics:</span>
-                  <span className="text-white">Three.js / React Three Fiber Hero Orbs</span>
-
-                  <span className="text-slate-400 font-medium">Event Engine:</span>
-                  <span className="text-white">RabbitMQ Queue Clustering (10k+ events/day)</span>
-
-                  <span className="text-slate-400 font-medium">Agent Engine:</span>
-                  <span className="text-white">CrewAI Multi-Agents, LangChain, RAG Pipelines</span>
-                </div>
+              {/* Spec rows — label left, value right, like the real About panel */}
+              <div className="rounded-xl border border-white/10 bg-white/[0.02] divide-y divide-white/5">
+                {[
+                  { label: 'Core Stack', value: 'Node.js, Express, Python (FastAPI/Django)' },
+                  { label: 'Interface', value: 'React, Next.js, Framer Motion, Tailwind' },
+                  { label: 'Memory', value: 'Redis Cache, MongoDB Aggregations' },
+                  { label: 'Graphics', value: 'Three.js / React Three Fiber' },
+                  { label: 'Event Engine', value: 'RabbitMQ Clustering (10k+ events/day)' },
+                  { label: 'Agent Engine', value: 'CrewAI Multi-Agents, LangChain, RAG' },
+                ].map((row) => (
+                  <div key={row.label} className="flex items-baseline justify-between gap-6 px-4 py-2.5 text-xs">
+                    <span className="text-slate-400 font-medium shrink-0">{row.label}</span>
+                    <span className="text-white text-right">{row.value}</span>
+                  </div>
+                ))}
               </div>
 
-              {/* Flavor text — playful, deliberately set apart so it never reads as a real spec */}
-              <div className="rounded-xl border border-dashed border-white/15 p-3 flex items-center justify-between gap-3">
-                <div className="grid grid-cols-[100px,1fr] gap-x-4 gap-y-2.5 text-xs font-light flex-1">
-                  <span className="text-slate-500 font-medium">Developer Model:</span>
-                  <span className="text-slate-400 font-mono">Raj-Bhoyar-SDE-AI-2026</span>
-
-                  <span className="text-slate-500 font-medium">Serial Code:</span>
-                  <span className="text-cyan-400/70 font-mono tracking-wider font-semibold">BITWIZARD25-CSE24</span>
-                </div>
+              {/* Actions — the "More Info…" row */}
+              <div className="flex flex-wrap gap-2.5">
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent('open-resume-modal'))}
+                  className="px-4 py-2 rounded-lg text-xs font-semibold text-black bg-white hover:bg-slate-200 transition-colors"
+                >
+                  View Resume…
+                </button>
+                <a
+                  href="https://github.com/bitwizard25"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-lg text-xs font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/10 transition-colors"
+                >
+                  GitHub Profile
+                </a>
               </div>
-              <p className="text-[10px] text-slate-500 italic -mt-2">Flavor text, not hardware.</p>
+
+              {/* Serial line — thematic flavor, styled like real fine print */}
+              <p className="text-[10px] text-slate-500 font-mono">
+                Model RB-2026 · Serial <span className="text-cyan-400/70 tracking-wider">BITWIZARD25-CSE24</span>
+              </p>
             </div>
           </div>
         )}

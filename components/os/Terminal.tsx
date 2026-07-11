@@ -26,7 +26,7 @@ const HELP = `Available commands:
 /** A small fake shell — enough commands to be fun, not enough to be a chore */
 export default function Terminal({ openApp, closeSelf }: TerminalProps) {
   const [lines, setLines] = useState<Line[]>([
-    { text: "Welcome to RajOS. Type 'help' to get started." },
+    { text: "Welcome to Bitwizard OS. Type 'help' to get started." },
   ]);
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
